@@ -12,7 +12,7 @@ these steps.
 ### 1. Set up a development environment
 
 [Development Setup Wiki
-Page](https://github.com/Eranziel/foundryvtt-lancer/wiki/Development-Setup)
+Page](https://github.com/LPfontes/foundryvtt-lancer/wiki/Development-Setup)
 
 This is necessary to import and export the macro from the compendium.
 
