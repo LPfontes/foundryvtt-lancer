@@ -23,7 +23,7 @@ export default defineConfig({
   // For AWS Config
   resolve: { alias: [{ find: "./runtimeConfig", replacement: "./runtimeConfig.browser" }] },
   optimizeDeps: {
-    include: ["@massif/lancer-data"],
+    include: ["@massif/lancer-data", "lancer-data-pt-br"],
   },
   build: {
     emptyOutDir: false,

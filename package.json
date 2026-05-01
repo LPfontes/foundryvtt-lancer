@@ -9,16 +9,16 @@
   ],
   "scripts": {
     "build": "vite build",
-    "build:packs": "./scripts/pack.mjs",
+    "build:packs": "node ./scripts/pack.mjs",
     "build:watch": "vite build --watch",
-    "clean": "rm -fR dist",
+    "clean": "node -e \"const fs = require('fs'); if (fs.existsSync('dist')) fs.rmSync('dist', { recursive: true, force: true })\"",
     "format": "dprint fmt",
-    "generate:yml": "./scripts/unpack.mjs",
-    "link": "./scripts/symlink.mjs",
-    "postinstall": "./scripts/symlink.mjs",
+    "generate:yml": "node ./scripts/unpack.mjs",
+    "link": "node ./scripts/symlink.mjs",
+    "postinstall": "node ./scripts/symlink.mjs",
     "prepare": "husky install",
     "serve": "vite",
-    "version": "./scripts/version.mjs && git add src/system.json",
+    "version": "node ./scripts/version.mjs && git add src/system.json",
     "watch": "vite build --watch"
   },
   "author": "",
@@ -57,6 +57,7 @@
     "@massif/wallflower-data": "^2.1.0",
     "aws-amplify": "^5.3.21",
     "jszip": "^3.10.1",
+    "lancer-data-pt-br": "file:../lancer-data-pt-br",
     "tippy.js": "^6.3.1"
   },
   "lint-staged": {

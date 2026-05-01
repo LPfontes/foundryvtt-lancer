@@ -1,0 +1,515 @@
+{
+  "TYPES": {
+    "Actor": {
+      "deployable": "Implemento",
+      "mech": "Mecha",
+      "npc": "PNJ",
+      "pilot": "Piloto"
+    },
+    "Item": {
+      "bond": "Elo",
+      "core_bonus": "Bônus de Núcleo",
+      "frame": "Chassi",
+      "license": "Licença",
+      "mech_system": "Sistema de Mecha",
+      "mech_weapon": "Arma de Mecha",
+      "npc_class": "Classe de PNJ",
+      "npc_feature": "Característica de PNJ",
+      "npc_template": "Modelo de PNJ",
+      "organization": "Organização",
+      "pilot_armor": "Armadura de Piloto",
+      "pilot_gear": "Equipamento de Piloto",
+      "pilot_weapon": "Arma de Piloto",
+      "reserve": "Reserva",
+      "skill": "Perícia",
+      "status": "Status/Condição",
+      "talent": "Talent",
+      "weapon_mod": "Mod de Arma"
+    }
+  },
+  "lancer": {
+    "LancerPilotSheet": "Ficha de Piloto do Sistema Lancer",
+    "LancerMechSheet": "Ficha de Mecha do Sistema Lancer",
+    "LancerDeployableSheet": "Ficha de Implemento do Sistema Lancer",
+    "LancerNPCSheet": "Ficha de PNJ do Sistema Lancer",
+    "LancerItemSheet": "Ficha de Item do Sistema Lancer",
+    "LancerFrameSheet": "Ficha de Chassi do Sistema Lancer",
+    "LancerLicenseSheet": "Ficha de Licença do Sistema Lancer",
+    "LancerNPCClassSheet": "Ficha de Classe/Modelo de PNJ do Sistema Lancer",
+    "LancerNPCFeatureSheet": "Ficha de Característica de PNJ do Sistema Lancer",
+    "Actor": {
+      "FIELDS": {
+        "activations": { "label": "Ativações" }
+      }
+    },
+    "placeholder": {
+      "name": "Nome"
+    },
+    "common-sheet": {
+      "tabs": {
+        "effects": "<EFEITOS//ATIVOS>"
+      }
+    },
+    "deployable-sheet": {
+      "header": {
+        "owner": "Dono"
+      },
+      "tabs": {
+        "status": "<STATUS>",
+        "config": "<CONFIG>"
+      },
+      "deployer": {
+        "label": "IMPLEMENTADOR"
+      },
+      "stats": {
+        "label": "ATRIBUTOS BASE"
+      }
+    },
+    "mech-sheet": {
+      "header": {
+        "inactive-warning": "Aviso: Mecha Inativo - Bônus de Piloto não rastreados"
+      },
+      "tabs": {
+        "stats": "<MECHA//STATS>",
+        "loadout": "<MECHA//EQUIP>",
+        "talents": "<PILOTO//TALENTOS>"
+      },
+      "core": {
+        "label": "NÚCLEO"
+      },
+      "actions": {
+        "label": "AÇÕES"
+      },
+      "macros": {
+        "label": "MACROS"
+      },
+      "system": {
+        "label": "EQUIPAMENTO",
+        "sp-used": "SP USADO"
+      }
+    },
+    "npc-sheet": {
+      "header": {
+        "class": "CLASSE",
+        "templates": "MODELOS"
+      },
+      "class": {
+        "label": "CLASSE",
+        "none": "NENHUMA CLASSE ENCONTRADA"
+      },
+      "templates": {
+        "label": "MODELOS"
+      },
+      "features": {
+        "label": "CARACTERÍSTICAS"
+      },
+      "effects": {
+        "label": "EFEITOS ATIVOS"
+      }
+    },
+    "pilot-sheet": {
+      "header": {
+        "ll": "NM",
+        "cs": "CODINOME",
+        "name": "NOME",
+        "bg": "HISTÓRICO"
+      },
+      "tabs": {
+        "cloud": "<RM-4://SYNC>",
+        "dossier": "<PILOTO//DOSSIÊ>",
+        "narrative": "<PILOTO//NARRATIVO>",
+        "tactical": "<PILOTO//TÁTICO>",
+        "loadout": "<EQUIP//CARGA>",
+        "mech": "<MECHA//ATIVO>"
+      },
+      "cloud-header": {
+        "label": "RM-4://(ID DE UPLINK OMNINET)",
+        "vaultID": "Carregar da sua conta Comp/Con (se logado)",
+        "raw-placeholder": "ou insira um código manualmente"
+      },
+      "cloud-download": {
+        "label": "DOWNLOAD",
+        "lastSync": "Última sincronia: {timestamp}"
+      },
+      "cloud-upload": {
+        "label": "UPLOAD",
+        "wip": "FUNCIONALIDADE EM DESENVOLVIMENTO"
+      },
+      "json-import": {
+        "label": "IMPORTAR"
+      },
+      "dossier": {
+        "cs": "CODINOME",
+        "name": "NOME",
+        "background": "HISTÓRICO"
+      },
+      "narrative": {
+        "bond": "ELO DE {bondName}",
+        "burdens": "FARDOS",
+        "clocks": "RELÓGIOS"
+      },
+      "tactical": {
+        "armor": "ARMADURA",
+        "weapons": "ARMAS",
+        "gear": "EQUIPAMENTO",
+        "reserves": "RESERVAS",
+        "licenses": "LICENÇAS",
+        "cores": "BÔNUS DE NÚCLEO"
+      },
+      "abilities": {
+        "skills": "PERÍCIAS",
+        "talents": "TALENTOS"
+      }
+    },
+    "chat-card": {
+      "title": {
+        "attack": "// ATAQUE //",
+        "damage": "// DANO //",
+        "reliable": "// CONFIÁVEL //",
+        "crit-damage": "// DANO CRÍTICO //",
+        "self-heat": "// CALOR PRÓPRIO //",
+        "defense-hit": "// ATAQUE VS {defense} //",
+        "effect": "// EFEITO //",
+        "on-attack": "// AO ATACAR //",
+        "on-hit": "// AO ACERTAR //",
+        "on-crit": "// NO CRÍTICO //",
+        "charge-roll": "// ROLAGEM DE CARGA //",
+        "recharged": "// RECARREGADO //",
+        "structure": "// DANO DE ESTRUTURA //",
+        "overheating": "// SUPERAQUECIMENTO //",
+        "cascade": "// CASCATA //",
+        "check": "// TESTE :: {check} //",
+        "system": "// SISTEMA :: {title} //",
+        "mod": "// MOD :: {title} //",
+        "trait": "// TRAÇO :: {title} //",
+        "tech": "// TECH :: {title} //",
+        "reaction": "// REAÇÃO :: {title} //"
+      },
+      "label": {
+        "trigger": "GATILHO",
+        "effect": "EFEITO"
+      },
+      "attack": {
+        "crit": "CRÍTICO",
+        "hit": "ACERTO",
+        "miss": "ERRO",
+        "roll-all-damage": "ROLAR DANO"
+      },
+      "exclamation": {
+        "overkill": "OVERKILL!"
+      },
+      "overcharge": {
+        "charged": "{target} + :: CARREGADO",
+        "uncharged": "{target} + :: NÃO CARREGADO"
+      },
+      "remaining": "{total} / {max} RESTANTE"
+    },
+    "floatingDamageNumbers": {
+      "name": "Números de Dano Flutuantes",
+      "hint": "Habilita números de dano flutuantes para mudanças em atributos, incluindo aplicação de rolagens de dano. Esta configuração é individual para cada cliente."
+    },
+    "uiTheme": {
+      "name": "Tema da UI",
+      "hint": "Esquema de cores para a UI, ecoando os temas do Comp/Con.",
+      "gms": "Vermelho GMS (padrão)",
+      "gmsDark": "GMS Escuro",
+      "msmc": "Solarizado MSMC",
+      "horus": "Terminal HORUS",
+      "ha": "Harrison Armory Ras Shamra",
+      "ssc": "Congresso Constelar SSC",
+      "ipsn": "IPS-N Carina",
+      "gal": "FORECAST/GALSIM"
+    },
+    "statusIconsConfig": {
+      "menu-name": "Ícones de Status",
+      "menu-label": "Configuração de Ícones de Status",
+      "menu-hint": "Configura os ícones de status que aparecem no HUD do token",
+      "defaultConditionsStatus": "Condições e Status Padrão",
+      "defaultConditionsStatus-desc": "Habilita o conjunto de ícones padrão para condições e status",
+      "cancerConditionsStatus": "Condições e Status de Cancermantis",
+      "cancerConditionsStatus-desc": "Habilita o conjunto de ícones de Cancermantis para condições e status",
+      "cancerNPCTemplates": "Modelos de PNJ de Cancermantis",
+      "cancerNPCTemplates-desc": "Habilita o conjunto de ícones de Cancermantis para modelos de PNJ",
+      "hayleyConditionsStatus": "Condições e Status de Hayley",
+      "hayleyConditionsStatus-desc": "Habilita o conjunto de ícones de Hayley para condições e status",
+      "hayleyPC": "Sistemas de PJ de Hayley",
+      "hayleyPC-desc": "Habilita o conjunto de ícones de Hayley para efeitos de sistema de PJ",
+      "hayleyNPC": "Sistemas de PNJ de Hayley",
+      "hayleyNPC-desc": "Habilita o conjunto de ícones de Hayley para efeitos de sistema de PNJ",
+      "hayleyUtility": "Utilidades de Hayley",
+      "hayleyUtility-desc": "Habilita o conjunto de ícones de Hayley para indicadores de utilidade",
+      "tommyConditionsStatus": "Condições e Status de Tommy",
+      "tommyConditionsStatus-desc": "Habilita o conjunto de ícones de Tommy para condições e status"
+    },
+    "statusIconsNames": {
+      "abjure": "Abjurar",
+      "aceso": "Aceso",
+      "blind": "Cego",
+      "bolster": "Reforçar",
+      "burn": "Combustão",
+      "camus_razor": "Navalha de Camus",
+      "chain": "Corrente",
+      "chains_of_prometheus": "Correntes de Prometeu",
+      "clamp_bomb": "Bomba de Grampo",
+      "commander": "Comandante",
+      "cover_hard": "Cobertura - Pesada",
+      "cover_soft": "Cobertura - Leve",
+      "dangerzone": "Zona de Perigo",
+      "destroyed": "Destruído",
+      "dimensional_shackles": "Algemas Dimensionais",
+      "dispersal_shield_1": "Escudo de Dispersão 1",
+      "dispersal_shield_2": "Escudo de Dispersão 2",
+      "dispersal_shield_3": "Escudo de Dispersão 3",
+      "dominions_breadth": "Amplitude do Domínio",
+      "downandout": "Fora de Combate",
+      "duat_gate": "Portão Duat",
+      "echo_edge": "Gume do Eco",
+      "elite": "Elite",
+      "engaged": "Engajado",
+      "excommunicate": "Excomungar",
+      "exotic": "Exótico",
+      "exposed": "Exposto",
+      "fade_cloak": "Manto de Desvanecimento",
+      "flaw_minus": "FALHA_menos",
+      "flaw_plus": "FALHA_mais",
+      "flying": "Voando",
+      "focus_down": "Focar",
+      "follower_count": "Contagem de Seguidores",
+      "grappled": "Agarrado",
+      "gravity": "Gravidade",
+      "grind_maniple": "Manípulo de Moagem",
+      "grunt": "Bucha de Canhão",
+      "haste": "Pressa",
+      "hidden": "Escondido",
+      "hiddeninvis": "Escondido e Invisível",
+      "hunter_lock": "Mira do Caçador",
+      "hyperdense_armor": "Armadura Hiperdensa",
+      "illusionary_subroutines": "Sub-rotinas Ilusórias",
+      "immobilized": "Imobilizado",
+      "impaired": "Debilitado",
+      "imperial_eye": "Olho Imperial",
+      "intangible": "Intangível",
+      "investiture": "Investidura",
+      "invisible": "Invisível",
+      "jammed": "Travado",
+      "kraul_grapple": "Gancho Kraul",
+      "latch_drone": "Drone de Trava",
+      "lockon": "Mira Travada",
+      "marked": "Marcado",
+      "mercenary": "Mercenário",
+      "metahook": "Meta-gancho",
+      "molten_puncture": "Perfuração Derretida",
+      "npc_tier_1": "Tier 1",
+      "npc_tier_2": "Tier 2",
+      "npc_tier_3": "Tier 3",
+      "overshield": "Sobre-escudo",
+      "pain_transference": "Transferência de Dor",
+      "petrify": "Petrificar",
+      "pirate": "Pirata",
+      "prone": "Caído",
+      "reactor_meltdown": "Fusão do Reator",
+      "resistance_burn": "Resistir Combustão",
+      "resistance_energy": "Resistir Energia",
+      "resistance_explosive": "Resistir Explosivo",
+      "resistance_heat": "Resistir Calor",
+      "resistance_kinetic": "Resistir Cinético",
+      "retort_loop": "Loop de Retorsão",
+      "rpv": "RPV",
+      "sanctuary": "Santuário",
+      "shahnameh": "Shahnameh",
+      "ship": "Nave",
+      "shredded": "Despedaçado",
+      "shutdown": "Desligado",
+      "slow": "Lento",
+      "spacer": "Espacial",
+      "spike": "Espigão",
+      "stasis": "Estase",
+      "stunned": "Atordoado",
+      "supercharger": "Supercompressor",
+      "sympathetic_shield": "Escudo Simpático",
+      "tachyon_shield": "Escudo de Táquions",
+      "tear_down": "Derrubar",
+      "terrify": "Aterrorizar",
+      "tiercust": "Tier Personalizado",
+      "tracking_bug": "Rastreador",
+      "trueblack": "Égide Trueblack",
+      "ultra": "Ultra",
+      "unravel": "Desfiar",
+      "vehicle": "Veículo",
+      "veteran": "Veterano",
+      "viral_logic": "Lógica Viral",
+      "walk_of_kings": "Caminho dos Reis",
+      "warp_sensors": "Sensores de Dobra"
+    },
+    "automation": {
+      "menu-name": "Automação",
+      "menu-label": "Configurações de Automação do Sistema",
+      "menu-hint": "Define quais opções de automação do sistema estão habilitadas, ou desliga todas",
+      "master-switch": "Habilitado",
+      "master-switch-desc": "Desligue isto para fazer tudo manualmente",
+      "attacks": "Avaliação de rolagens de ataque",
+      "attacks-desc": "Alterna se você deseja que o sistema auto-calcule acertos e outras automações relacionadas a ataques.",
+      "damage": "Aplicação de dano",
+      "damage-desc": "Alterna se você deseja que o sistema aplique o dano rolado aos alvos.",
+      "structure": "Estrutura/Estresse",
+      "structure-desc": "Solicita automaticamente uma rolagem de estrutura ou estresse quando um mecha chega a 0 PV ou excede seu limite de calor.",
+      "overcharge_heat": "Aplicar Calor de Sobrecarga",
+      "overcharge_heat-desc": "Aplica automaticamente calor ao rolar sobrecarga",
+      "attack_self_heat": "Calor Próprio de Ataques",
+      "attack_self_heat-desc": "Quando uma arma tem as tags Overkill ou Calor (próprio), aplica automaticamente qualquer calor.",
+      "remove_templates": "Remover Modelos Automaticamente",
+      "remove_templates-desc": "Quando o turno muda, os modelos de medida de ataques devem ser limpos?",
+      "limited_loading": "Gerenciar Limitado/Carregamento",
+      "limited_loading-desc": "Quando itens são usados, seu status de limitado e carregamento deve ser gerenciado e rastreado automaticamente?",
+      "npc_recharge": "Recarga de PNJ",
+      "npc_recharge-desc": "Rola automaticamente para recarregar sistemas de PNJ no início de seus turnos.",
+      "token_size": "Gerenciar Tamanhos de Tokens",
+      "token_size-desc": "Força automaticamente o tamanho dos tokens para coincidir com o atributo de tamanho do ator associado."
+    },
+    "actionTracker": {
+      "menu-name": "Rastreador de Ação",
+      "menu-label": "Configurações do Rastreador de Ação",
+      "menu-hint": "Configura opções relacionadas ao HUD do rastreador de ação e automações.",
+      "showHotbar": "Mostrar Hotbar",
+      "showHotbar-desc": "Alterna a exibição da hotbar flutuante durante o combate.",
+      "allowPlayers": "Permitir Jogadores",
+      "allowPlayers-desc": "Permite que os jogadores modifiquem suas próprias ações.",
+      "printMessages": "Imprimir Mensagens",
+      "printMessages-desc": "Imprime mensagens no chat para o início e fim do turno de um token."
+    },
+    "initiative": {
+      "sorttracker": "Ordenar o rastreador",
+      "sorttracker-desc": "Move a unidade que está jogando seu turno para o topo do rastreador e move as unidades que já jogaram para o final.",
+      "appearancesettingslabel": "Configurações de Aparência",
+      "appearancesettingsbutton": "Aparência",
+      "appearancesettings-desc": "Configura as cores e ícone usados no rastreador"
+    },
+    "squaregriddiagonals": {
+      "name": "Movimento Diagonal em Grade Quadrada",
+      "hint": "Como as distâncias serão calculadas ao mover diagonalmente em uma grade quadrada.",
+      "111": "1-1-1: Movimentos diagonais custam 1 (padrão)",
+      "121": "1-2-1: Movimentos diagonais alternam o custo de 1 para 2",
+      "222": "2-2-2: Distância de Manhattan. Diagonais custam 2",
+      "euc": "Euclidiana: Distância Euclidiana arredondada"
+    },
+    "effect": {
+      "categories": {
+        "passive": "Passivo",
+        "passthrough": "Transmissão",
+        "disabled": "Desabilitado",
+        "inherited": "Herdado"
+      }
+    },
+    "tables": {
+      "structure": {
+        "title": {
+          "crushing": "Acerto Esmagador",
+          "direct": "Acerto Direto",
+          "trauma": "Trauma de Sistema",
+          "glancing": "Golpe de Raspão"
+        },
+        "description": {
+          "crushing": "Seu mecha está danificado além de qualquer reparo – ele foi destruído. Você ainda pode sair dele normalmente.",
+          "direct": {
+            "3plus": "Seu mecha está @LancerID[atordoado] até o final do seu próximo turno.",
+            "2": "Rola um teste de CASCO. Em um sucesso, seu mecha fica @LancerID[atordoado] até o final do seu próximo turno. Em uma falha, seu mecha é destruído.",
+            "1": "Seu mecha é destruído."
+          },
+          "trauma": "Partes do seu mecha são arrancadas pelo dano. Role 1d6. Em um 1–3, todas as armas em um encaixe de sua escolha são destruídas; em um 4–6, um sistema de sua escolha é destruído. Sistemas e armas LIMITADOS que estão sem cargas não são escolhas válidas. Se não houver escolhas válidas restantes, torna-se o outro resultado. Se não houver sistemas ou armas válidos restantes, este resultado torna-se um ACERTO DIRETO.",
+          "glancing": "Sistemas de emergência entram em ação e estabilizam seu mecha, mas ele fica @LancerID[debilitado] até o final do seu próximo turno."
+        }
+      },
+      "overheat": {
+        "title": {
+          "irreversible": "Fusão Irreversível",
+          "meltdown": "Fusão",
+          "destabilized": "Gerador Desestabilizado",
+          "shunt": "Desvio de Emergência"
+        },
+        "description": {
+          "irreversible": "O reator torna-se crítico. seu mecha sofre uma fusão de reator no final do seu próximo turno.",
+          "meltdown": {
+            "3plus": "Seu mecha torna-se @Compendium[world.status-items.Exposed]",
+            "2": "Rola um teste de ENGENHARIA. Em um sucesso, seu mecha fica @Compendium[world.status-items.Exposed]. Em uma falha, ele sofre uma fusão de reator após 1d6 de seus turnos (rolado pelo Mestre). Uma fusão de reator pode ser evitada tentando novamente o teste de ENGENHARIA como uma ação livre.",
+            "1": "Seu mecha sofre uma fusão de reator no final do seu próximo turno."
+          },
+          "destabilized": "O gerador torna-se instável, começando a ejetar jatos de plasma. Seu mecha fica @Compendium[world.status-items.Exposed].",
+          "shunt": "Os sistemas de resfriamento do seu mecha conseguem conter o aumento de calor; no entanto, seu mecha fica @Compendium[world.status-items.Impaired] até o final do seu próximo turno."
+        }
+      },
+      "structureMonstrosity": {
+        "title": {
+          "fatal": "Acerto Fatal",
+          "direct": "Acerto Direto",
+          "dismember": "Desmembramento",
+          "powerful": "Acerto Poderoso",
+          "glancing": "Acerto de Raspão"
+        },
+        "description": {
+          "fatal": "A Monstruosidade é destruída.",
+          "direct": {
+            "3plus": "A Monstruosidade é atingida na cabeça e fica @LancerID[atordoado] até o final do seu próximo turno.",
+            "2": "A Monstruosidade deve ser bem-sucedida em um salvamento de CASCO ou ser destruída.",
+            "1": "A Monstruosidade é destruída."
+          },
+          "dismember": "O ataque arranca um membro ou pedaço da Monstruosidade; ela sofre 1d6 de dano CINÉTICO e fica @LancerID[lento] pelo resto da cena.",
+          "powerful": "A Monstruosidade é derrubada @LancerID[caído] pela força do golpe.",
+          "glancing": "A Monstruosidade recua de dor; ela fica @LancerID[debilitado] até o final do seu próximo turno."
+        }
+      }
+    },
+    "compendium": {
+      "core_macros": "Macros LANCER",
+      "lancer_info": "Informações LANCER",
+      "deployable": "Implementos",
+      "mech-items": "Itens de Mecha",
+      "npc-actors": "PNJs Prontos",
+      "npc-items": "Itens de PNJ",
+      "pilot-items": "Itens de Piloto",
+      "player-actors": "Atores de Jogadores Prontos",
+      "status-items": "Status/Condição"
+    },
+    "tokenConfig": {
+      "manual_token_size": {
+        "label": "Tamanho de Token Manual",
+        "hint": "Ignorar a automação do sistema para determinar o tamanho do token"
+      }
+    },
+    "movement": {
+      "actions": {
+        "blink": "Teletransporte (Movimento)",
+        "forced": "Movimento Forçado",
+        "ignore": "Ignorar Terreno",
+        "teleport": "Teletransporte (Habilidade)"
+      }
+    }
+  },
+  "LANCERINITIATIVE": {
+    "IconSettingsMenu": "Configurações de Ícones",
+    "Icon": "Ícone de Ação",
+    "IconDesc": "Classes CSS para definir o ícone de ativação.",
+    "DeactivateIcon": "Ícone de Desativação",
+    "DeactivateIconDesc": "Classes CSS para definir o ícone de desativação.",
+    "IconSize": "Tamanho do Ícone",
+    "IconPreview": "Prévia do Ícone",
+    "PCColor": "Cor do Jogador",
+    "PCColorDesc": "Padrão: #44abe0",
+    "FriendlyColor": "Cor de Aliado",
+    "FriendlyColorDesc": "Padrão: #44abe0",
+    "NeutralColor": "Cor Neutra",
+    "NeutralColorDesc": "Padrão: #146464",
+    "EnemyColor": "Cor de Inimigo",
+    "EnemyColorDesc": "Padrão: #d98f30",
+    "DoneColor": "Cor de Inativo",
+    "DoneColorDesc": "Padrão: #aaaaaa",
+    "ActivatedLast": "Unidades Ativadas por Último",
+    "ActivatedLastDesc": "Move as unidades que já agiram para o final do rastreador.",
+    "SortTracker": "Ordenar o Rastreador",
+    "SortTrackerDesc": "Move a unidade que está jogando para o topo e as que já agiram para o final.",
+    "EnableInitiative": "Habilitar Rolagem de Iniciativa",
+    "EnableInitiativeDesc": "Adiciona um botão aos combatentes para rolar iniciativa",
+    "AddActivation": "Adicionar Ativação",
+    "RemoveActivation": "Remover Ativação",
+    "UndoActivation": "Desfazer Ativação"
+  }
+}

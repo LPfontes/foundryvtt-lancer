@@ -9,9 +9,23 @@ const dataPath = child.execSync("npx fvtt --config ./fvttrc.yml configure get da
 if ((dataPath || "undefined") !== "undefined") {
   const systemDir = path.resolve(dataPath, "Data", "systems", "lancer");
   try {
-    fs.symlinkSync(path.resolve("dist"), systemDir);
+    const stats = fs.lstatSync(systemDir);
+    if (stats.isSymbolicLink() || stats.isDirectory()) {
+      console.log("System directory or symlink already exists");
+      process.exit(0);
+    }
   } catch (e) {
-    if (e.code === "ENOENT") console.log(`Foundry systemdata dir missing: ${path.normalize(path.join(e.dest, ".."))}`);
-    if (e.code === "EEXIST") console.log("System directory or symlink already exists");
+    // Path doesn't exist, proceed
+  }
+
+  try {
+    fs.symlinkSync(path.resolve("dist"), systemDir, process.platform === "win32" ? "junction" : "dir");
+    console.log(`Linked dist to ${systemDir}`);
+  } catch (e) {
+    if (e.code === "ENOENT") {
+      console.log(`Foundry systemdata dir missing: ${path.normalize(path.join(systemDir, ".."))}`);
+    } else {
+      console.error(`Failed to create symlink: ${e.message}`);
+    }
   }
 }

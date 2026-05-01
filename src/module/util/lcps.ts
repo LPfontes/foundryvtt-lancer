@@ -348,10 +348,19 @@ function convertNpmDataToContentPack(data: NpmLancerData, id: string, manifest?:
   }
   // Filter function to remove the placeholders for missing items.
   const removePlaceholders = (x: any) => !x.id || !x.id.startsWith("missing_");
+  const fallbackManifest = data.info
+    ? ({
+        name: data.info.name,
+        author: data.info.author,
+        version: data.info.version,
+        website: data.info.website,
+        item_prefix: "",
+      } as IContentPackManifest)
+    : manifest;
   return {
     id,
     active: true,
-    manifest: (data.lcp_manifest || manifest) as IContentPackManifest,
+    manifest: (data.lcp_manifest || fallbackManifest) as IContentPackManifest,
     data: {
       coreBonuses: data.core_bonuses?.filter(removePlaceholders),
       frames: data.frames?.filter(removePlaceholders),
@@ -449,6 +458,16 @@ async function massifContentPacks(): Promise<{ id: string; manifest: IContentPac
       id: "sotw",
       manifest: await import("@massif/sotw-data/lib/lcp_manifest.json"),
       cpData: (await import("@massif/sotw-data")) as NpmLancerData,
+    },
+    {
+      id: "lancer-pt-br",
+      manifest: {
+        name: "Lancer Core Book (PT-BR)",
+        author: "LPfontes / Massif Press",
+        version: "1.0.0",
+        website: "https://github.com/LPfontes/lancer-data-pt-br",
+      } as IContentPackManifest,
+      cpData: (await import("lancer-data-pt-br")) as NpmLancerData,
     },
   ];
 }

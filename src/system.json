@@ -69,7 +69,10 @@
       "type": "JournalEntry"
     }
   ],
-  "languages": [{ "lang": "en", "name": "English", "path": "lang/en.json" }],
+  "languages": [
+    { "lang": "en", "name": "English", "path": "lang/en.json" },
+    { "lang": "pt-br", "name": "Português (Brasil)", "path": "lang/pt-br.json" }
+  ],
   "socket": true,
   "grid": { "distance": 1, "units": "", "type": 2, "diagonals": 0 },
   "primaryTokenAttribute": "hp",
