@@ -8,22 +8,14 @@ if (process.env.CI) process.exit(0);
 const dataPath = child.execSync("npx fvtt --config ./fvttrc.yml configure get dataPath").toString().trim();
 if ((dataPath || "undefined") !== "undefined") {
   const systemDir = path.resolve(dataPath, "Data", "systems", "lancer");
-  try {
-    const stats = fs.lstatSync(systemDir);
-    if (stats.isSymbolicLink() || stats.isDirectory()) {
-      console.log("System directory or symlink already exists");
-      process.exit(0);
-    }
-  } catch (e) {
-    // Path doesn't exist, proceed
-  }
-
+  console.log(`Symlinking ${systemDir} to dev build`);
   try {
     fs.symlinkSync(path.resolve("dist"), systemDir, process.platform === "win32" ? "junction" : "dir");
-    console.log(`Linked dist to ${systemDir}`);
   } catch (e) {
     if (e.code === "ENOENT") {
       console.log(`Foundry systemdata dir missing: ${path.normalize(path.join(systemDir, ".."))}`);
+    } else if (e.code === "EEXIST") {
+      console.log("System directory or symlink already exists");
     } else {
       console.error(`Failed to create symlink: ${e.message}`);
     }

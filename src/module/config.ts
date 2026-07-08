@@ -42,11 +42,13 @@ export const LANCER = {
   // setting_welcome: "hideWelcome", // Deprecated as of v2.7.0
   setting_floating_damage_numbers: "floatingNumbers",
   setting_ui_theme: "uiTheme",
+  setting_pause_icon: "pauseIcon",
   setting_compcon_login: "compconLogin",
   setting_status_icons: "statusIconConfig",
   setting_automation: "automationOptions",
   setting_automation_switch: "automationSwitch",
   setting_automation_attack: "attackSwitch", // Deprecated
+  setting_scan_outputs: "scanOutputs",
   setting_actionTracker: "actionTracker",
   setting_combat_appearance: "combat-tracker-appearance",
   setting_combat_sort: "combat-tracker-sort",
@@ -56,6 +58,7 @@ export const LANCER = {
   setting_dsn_setup: "dsnSetup",
   setting_square_grid_diagonals: "squareGridDiagonals",
   setting_tag_config: "tagConfig",
+  setting_simple_fonts: "simpleFonts",
   // setting_120: "warningFor120", // Old setting, currently unused.
   // setting_beta_warning: "warningForBeta", // Old setting, currently unused.
 } as const;

@@ -327,7 +327,7 @@ export function bondPower(bond_path: string, power_index: number, options: Helpe
   let bond = resolveHelperDotpath<LancerBOND>(options, bond_path);
   let power = bond?.system.powers[power_index];
   if (!bond || !power) return "";
-  let body = `<span class="desc-text">${power.description}</span>`;
+  let body = `<span class="desc-text">${power.description ?? ""}</span>`;
   return `
     <div class="card clipped bond-power" data-uuid="${bond.uuid}" data-power-index="${power_index}">
       <div class="lancer-header lancer-primary medium clipped-top">
@@ -539,7 +539,7 @@ export function pilotGearRefview(gear_path: string, options: HelperOptions): str
     </div>
     <div class="pilot-gear-body flexcol">
       <div class="flexrow">
-        <div class="effect-text" style=" padding: 5px">
+        <div class="effect-text">
           ${gear.system.description || ""}
         </div>
         ${uses}
@@ -634,7 +634,7 @@ export function reserveRefView(reserve_path: string, options: HelperOptions): st
     </div>
     <div class="flexcol">
       <div class="flexrow">
-        <div class="effect-text" style=" padding: 5px">
+        <div class="effect-text">
           ${reserve.system.description}
         </div>
         ${actions}
@@ -887,7 +887,7 @@ export function manufacturer_ref(source_path: string, options: HelperOptions): s
 // This if for display purposes and does not provide editable fields
 export function licenseRefView(item_path: string, options: HelperOptions): string {
   let license = resolveHelperDotpath(options, item_path) as LancerLICENSE;
-  const mfr = manufacturerStyle(license.system.manufacturer);
+  const mfr = license.system.manufacturer ? manufacturerStyle(license.system.manufacturer) : "gms";
   return `
     <li class="card clipped ref set" ${ref_params(license)}>
       <div class="lancer-header ${mfr} medium clipped-top" style="grid-area: 1/1/2/3">
@@ -907,7 +907,7 @@ export function framePreview(path: string, options: HelperOptions): string {
   if (!frame) {
     return "";
   } else {
-    let frame_img = encodeURI(frameToPath(frame.name) ?? "systems/lancer/assets/icons/frame.svg");
+    let frame_img = frameToPath(frame.name) ?? "systems/lancer/assets/icons/frame.svg";
     return `
     <li class="card clipped ref set click-open" ${ref_params(frame)}>
       <div class="compact-frame medium flexrow">
@@ -927,7 +927,7 @@ export function npcClassRefView(npc_class: LancerNPC_CLASS | null, item_path?: s
   if (!npc_class) {
     return "";
   } else {
-    let frame_img = encodeURI(npc_class.img ?? "systems/lancer/assets/icons/npc_class.svg");
+    let frame_img = npc_class.img ?? "systems/lancer/assets/icons/npc_class.svg";
     return `
     <div class="card clipped ref set click-open" ${ref_params(npc_class)}>
       <div class="compact-class medium flexrow">
@@ -1206,7 +1206,7 @@ export function buildDeployableHTML(
 
   return `
   <div class="deployable-wrapper ref set ${options?.vertical ? "vertical" : ""}" ${ref_params(dep)}>
-    <img class="deployable-thumbnail" src="${encodeURI(dep.img!)}">
+    <img class="deployable-thumbnail" src="${dep.img!}">
     <div style="grid-area: title" class="title-wrapper">
       <span class="deployable-title click-open">
         ${dep.name ? dep.name.toUpperCase() : ""}

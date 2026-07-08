@@ -1,12 +1,15 @@
 import type { HelperOptions } from "handlebars";
-import { ActivationType, NpcFeatureType } from "../enums";
+import { ActivationType, NpcFeatureType, NpcTechType } from "../enums";
 import type { LancerNPC_FEATURE } from "../item/lancer-item";
 import type { SystemTemplates } from "../system-template";
 import { slugify } from "../util/lid";
 import { effectBox, resolveHelperDotpath } from "./commons";
 import { actionTypeIcon, npcAccuracyView, npcAttackBonusView, damageArrayView, rangeArrayView } from "./item";
 import { chargedIndicator, limitedUsesIndicator, loadingIndicator, ref_params } from "./refs";
-import { compactTagListHBS } from "./tags";
+import { compactTagList, compactTagListHBS } from "./tags";
+import type { LancerFlowState } from "../flows/interfaces";
+import { miniProfile, type MiniProfileData } from "./chat";
+import type MiniProfile from "../apps/components/MiniProfile.svelte";
 
 export const EffectIcons = {
   Generic: `systems/lancer/assets/icons/generic_item.svg`,
@@ -243,4 +246,140 @@ export function npcWeaponView(path: string, options: HelperOptions): string {
     `,
     options
   );
+}
+
+export function npcScanWeaponView(weapon: LancerFlowState.ScanWeaponData, options: HelperOptions): string {
+  let effect = ``,
+    onHit = ``,
+    tags = ``;
+
+  if (weapon.effect) {
+    effect = `<div class="effect-box">
+        <span class="effect-title clipped-bot">EFFECT</span>
+        <span class="effect-text">${weapon.effect}</span>
+      </div>`;
+  }
+  if (weapon.on_hit) {
+    onHit = `<div class="effect-box">
+        <span class="effect-title clipped-bot">ON HIT</span>
+        <span class="effect-text">${weapon.on_hit}</span>
+      </div>`;
+  }
+  if (weapon.tags?.length) {
+    tags = compactTagList(weapon.tags, "", { ...options, editable: false });
+  }
+
+  const profileData: MiniProfileData = {
+    attack: weapon.attack_bonus || undefined,
+    accuracy: weapon.accuracy || undefined,
+    range: weapon.range || [],
+    damage: weapon.damage,
+  };
+  return `
+    <li class="scan-feature-card">
+      <details>
+        <summary class="lancer-header lancer-secondary scan-feature-title">
+          <i class="cci cci-weapon i--3"></i>
+          <span>${weapon.name}</span>
+          <i class="mdi mdi-unfold-less-horizontal"></i>
+          <span class="scan-feature-type"> // ${weapon.weapon_type} // </span>
+        </summary>
+        ${miniProfile(profileData, options)}
+        ${effect}
+        ${onHit}
+        ${tags}
+      </details>
+    </li>`;
+}
+
+export function npcScanTechAttackView(system: LancerFlowState.ScanTechAttackData, options: HelperOptions): string {
+  let icon = ``,
+    effect = ``,
+    onHit = ``,
+    tags = ``;
+
+  if (system.tech_type === NpcTechType.Full) icon = `cci cci-tech-full`;
+  else icon = `cci cci-tech-quick`;
+
+  if (system.effect) {
+    effect = `<div class="effect-box">
+        <span class="effect-title clipped-bot">EFFECT</span>
+        <span class="effect-text">${system.effect}</span>
+      </div>`;
+  }
+  if (system.on_hit) {
+    onHit = `<div class="effect-box">
+        <span class="effect-title clipped-bot">ON HIT</span>
+        <span class="effect-text">${system.on_hit}</span>
+      </div>`;
+  }
+  if (system.tags?.length) {
+    tags = compactTagList(system.tags, "", { ...options, editable: false });
+  }
+
+  const profileData: MiniProfileData = {
+    attack: system.attack_bonus || undefined,
+    accuracy: system.accuracy || undefined,
+    range: system.range ? [system.range] : [],
+  };
+  return `
+    <li class="scan-feature-card">
+      <details>
+        <summary class="lancer-header lancer-secondary scan-feature-title">
+          <i class="${icon} i--3"></i>
+          <span>${system.name}</span>
+          <i class="mdi mdi-unfold-less-horizontal"></i>
+          <span class="scan-feature-type"> // ${system.tech_type || ""} TECH${system.tech_attack ? " ATTACK" : ""} // </span>
+        </summary>
+        ${miniProfile(profileData, options)}
+        ${effect}
+        ${onHit}
+        ${tags}
+      </details>
+    </li>`;
+}
+
+export function npcScanSystemView(system: LancerFlowState.ScanSystemData, options: HelperOptions): string {
+  let icon = ``,
+    trigger = ``,
+    effect = ``,
+    tags = ``;
+
+  if (system.type === NpcFeatureType.Tech) {
+    if (system.tech_type === NpcTechType.Full) icon = `cci cci-tech-full`;
+    else icon = `cci cci-tech-quick`;
+  } else {
+    icon = `cci cci-${system.type.toLowerCase()}`;
+  }
+
+  if (system.trigger) {
+    trigger = `<div class="effect-box">
+          <span class="effect-title clipped-bot">TRIGGER</span>
+          <span class="effect-text">${system.trigger}</span>
+        </div>`;
+  }
+  if (system.effect) {
+    effect = `<div class="effect-box">
+          <span class="effect-title clipped-bot">EFFECT</span>
+          <span class="effect-text">${system.effect}</span>
+        </div>`;
+  }
+  if (system.tags?.length) {
+    tags = compactTagList(system.tags, "", { ...options, editable: false });
+  }
+
+  return `
+    <li class="scan-feature-card">
+      <details>
+        <summary class="lancer-header lancer-${system.type.toLowerCase()} scan-feature-title">
+          <i class="${icon} i--3"></i>
+          <span>${system.name}</span>
+          <i class="mdi mdi-unfold-less-horizontal"></i>
+          <span class="scan-feature-type"> // ${system.type} // </span>
+        </summary>
+        ${trigger}
+        ${effect}
+        ${tags}
+      </details>
+    </li>`;
 }

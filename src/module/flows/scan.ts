@@ -1,0 +1,290 @@
+import { LANCER } from "../config";
+const lp = LANCER.log_prefix;
+import type { LancerActor } from "../actor/lancer-actor";
+import { NpcFeatureType, RangeType } from "../enums";
+import type { DamageData } from "../models/bits/damage";
+import type { UUIDRef } from "../source-template";
+import { renderTemplateStep } from "./_render";
+import { Flow, type FlowState } from "./flow";
+import type { LancerFlowState } from "./interfaces";
+
+const journalFolderName = "SCAN Database";
+const scanEntryPrefix = "SCAN:";
+const entryNumberDigits = 3;
+function scanEntryName(count: string, targetName: string): string {
+  return `${scanEntryPrefix} ${count} - ${targetName}`;
+}
+
+export function registerScanSteps(flowSteps: Map<string, any>) {
+  flowSteps.set("initScanData", initScanData);
+  flowSteps.set("printScanCard", printScanCard);
+  flowSteps.set("createScanJournal", createScanJournal);
+}
+
+export class ScanFlow extends Flow<LancerFlowState.ScanData> {
+  static steps = ["initScanData", "printScanCard", "createScanJournal"];
+
+  constructor(uuid: UUIDRef | LancerActor, data?: Partial<LancerFlowState.ScanData>) {
+    const initialData: LancerFlowState.ScanData = {
+      target: data?.target || null,
+      name: data?.target?.name || "Enemy Unknown",
+      img: null,
+      tier: 1,
+      class: "Unknown Class",
+      templates: [],
+    };
+
+    super(uuid, initialData);
+  }
+}
+
+async function initScanData(state: FlowState<LancerFlowState.ScanData>): Promise<boolean> {
+  if (!state.data) throw new TypeError(`Flowstate missing!`);
+  if (!state.data.target) {
+    ui.notifications.error(`You must target a token to scan.`);
+    return false;
+  }
+  const actor = state.data.target.actor;
+  if (!actor) {
+    ui.notifications.error(`The targeted token has no associated actor.`);
+    return false;
+  }
+  if (!actor.is_npc()) {
+    ui.notifications.error(`You can only scan NPC actors.`);
+    return false;
+  }
+  state.data.name = state.data.target.name;
+  state.data.img = actor.img;
+  state.data.tier = actor.system.tier || 1;
+  const classItem = actor.items.find(i => i.is_npc_class());
+  state.data.class = classItem?.name || "Unknown Class";
+  const templates = actor.items.filter(i => i.is_npc_template());
+  state.data.templates = templates.map(i => i.name);
+  const tierIndex = (actor.system.tier || 1) - 1;
+  state.data.stats = {
+    hull: actor.system.hull,
+    agi: actor.system.agi,
+    sys: actor.system.sys,
+    eng: actor.system.eng,
+    hp: actor.system.hp.max,
+    // TODO: conditional based on scan type - spotter, athena
+    // hpValue: actor.system.hp.value,
+    heat: actor.system.heat?.max,
+    structure: actor.system.structure?.max,
+    stress: actor.system.stress?.max,
+    armor: actor.system.armor,
+    evasion: actor.system.evasion,
+    edef: actor.system.edef,
+    speed: actor.system.speed,
+    size: actor.system.size,
+    save: actor.system.save,
+    sensor_range: actor.system.sensor_range,
+  };
+
+  const items = Array.from(actor.items).sort((a, b) => a.sort - b.sort);
+  // TODO: don't add weapons & systems to data for spotter scans
+  state.data.weapons = items
+    .filter(i => i.is_npc_feature() && i.system.type === NpcFeatureType.Weapon)
+    .map(item => {
+      if (item.system.origin?.name === "EXOTIC") {
+        return {
+          name: "UNKNOWN EXOTIC WEAPON",
+          weapon_type: item.system.weapon_type || "Unknown",
+        };
+      }
+      const tierDamage = item.system.damage && item.system.damage[tierIndex];
+      let damages: DamageData[] = [];
+      if (tierDamage) {
+        if (Array.isArray(tierDamage)) {
+          damages = damages.concat(tierDamage.map(d => ({ type: d.type, val: d.val })));
+        } else {
+          damages.push(tierDamage && { type: tierDamage.type, val: tierDamage.val });
+        }
+      }
+      return {
+        name: item.name,
+        weapon_type: item.system.weapon_type || "Unknown",
+        attack_bonus: item.system.attack_bonus && item.system.attack_bonus[tierIndex],
+        accuracy: item.system.accuracy && item.system.accuracy[tierIndex],
+        range: item.system.range?.map(r => ({ type: r.type, val: r.val })).filter(r => Boolean(r)) || [],
+        damage: damages.length ? damages : undefined,
+        effect: item.system.effect,
+        on_hit: item.system.on_hit,
+        tags: item.system.tags,
+      };
+    });
+
+  state.data.techAttacks = items
+    .filter(i => i.is_npc_feature() && i.system.type === NpcFeatureType.Tech && !!i.system.tech_attack)
+    .map(item => {
+      if (!item.is_npc_feature()) return null;
+      if (item.system.origin?.name === "EXOTIC") {
+        return {
+          name: "UNKNOWN EXOTIC TECH ATTACK",
+          type: NpcFeatureType.Tech,
+          effect: "",
+          range: { type: RangeType.Range, val: state.data?.target?.actor?.system.sensor_range || 0 },
+          tech_attack: true,
+        };
+      }
+      return {
+        name: item.name,
+        type: item.system.type || NpcFeatureType.Tech,
+        tech_attack: true,
+        attack_bonus: (item.system.attack_bonus && item.system.attack_bonus[tierIndex]) ?? 0,
+        accuracy: (item.system.accuracy && item.system.accuracy[tierIndex]) ?? 0,
+        range: { type: RangeType.Range, val: state.data?.target?.actor?.system.sensor_range || 0 },
+        effect: item.system.effect,
+        on_hit: item.system.on_hit,
+        tags: item.system.tags,
+      };
+    })
+    .filter(i => !!i);
+
+  state.data.systems = items
+    .filter(
+      i =>
+        i.is_npc_feature() &&
+        i.system.type !== NpcFeatureType.Weapon &&
+        i.system.type !== NpcFeatureType.Trait &&
+        !i.system.tech_attack
+    )
+    .map(item => {
+      if (!item.is_npc_feature()) return null;
+      if (item.system.origin?.name === "EXOTIC") {
+        return {
+          name: "UNKNOWN EXOTIC SYSTEM",
+          type: item.system.type || NpcFeatureType.Trait,
+          effect: "",
+        };
+      }
+      return {
+        name: item.name,
+        type: item.system.type || NpcFeatureType.Trait,
+        effect: item.system.effect,
+        tags: item.system.tags,
+        // Reactions
+        trigger: item.system.trigger,
+        // Tech Actions
+        tech_type: item.system.tech_type,
+      };
+    })
+    .filter(i => !!i);
+
+  state.data.traits = items
+    .filter(i => i.is_npc_feature() && i.system.type === NpcFeatureType.Trait)
+    .map(item => {
+      if (!item.is_npc_feature()) return null;
+      if (item.system.origin?.name === "EXOTIC") {
+        return {
+          name: "UNKNOWN EXOTIC TRAIT",
+          type: item.system.type || NpcFeatureType.Trait,
+          effect: "",
+        };
+      }
+      return {
+        name: item.name,
+        type: item.system.type || NpcFeatureType.Trait,
+        effect: item.system.effect,
+        tags: item.system.tags,
+      };
+    })
+    .filter(i => !!i);
+  return true;
+}
+
+async function createScanJournal(state: FlowState<LancerFlowState.ScanData>): Promise<boolean> {
+  const scanOutput = game.settings.get(game.system.id, LANCER.setting_scan_outputs);
+  if (!["both", "journal"].includes(scanOutput)) return true;
+
+  if (!state.data) throw new TypeError(`Flowstate missing!`);
+  if (!state.data.target) throw new TypeError(`Scan flow requires a target.`);
+  const actor = state.data.target.actor;
+  if (!actor) throw new TypeError(`Scan flow target does not reference an actor!`);
+
+  // Generate the contents for the scan journal
+  const scanContent = await foundry.applications.handlebars.renderTemplate(
+    `systems/${game.system.id}/templates/journal/scan-entry.hbs`,
+    state.data as any
+  );
+
+  // Find or create the Scans folder
+  let journalFolder = game.folders.getName(journalFolderName);
+  if (!journalFolder && journalFolderName.length > 0) {
+    try {
+      journalFolder = await Folder.create({
+        name: journalFolderName,
+        type: "JournalEntry",
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  if (!journalFolder) {
+    ui.notifications.error(
+      `Journal folder ${journalFolderName} does not exist and must be created by a user with permissions to do so.`
+    );
+    return false;
+  }
+
+  // Find and update the scan entry for the target if it already exists.
+  // If a scan entry for this target does not exist yet, create one.
+  const matchingJournalEntries = journalFolder.contents.filter(e => e.name.includes(actor.name));
+  let scanEntry;
+
+  if (matchingJournalEntries.length == 1) {
+    console.log(`${lp} Updating existing scan journal for ${state.data.name}`);
+    const scanName = matchingJournalEntries[0].name;
+    scanEntry = game.journal.getName(scanName);
+    let scanPage = scanEntry!.pages.getName(scanName);
+    if (!scanPage) {
+      // Create a new page and put it first
+      scanPage = new JournalEntryPage({
+        name: scanName,
+        type: "text",
+        sort: -100000,
+        text: { content: scanContent },
+      });
+      scanEntry!.createEmbeddedDocuments("JournalEntryPage", [scanPage]);
+    } else {
+      await scanPage.update({
+        _id: matchingJournalEntries[0]._id,
+        text: {
+          content: scanContent,
+        },
+      });
+    }
+  } else {
+    console.log(`${lp} Creating a new scan journal for ${state.data.name}`);
+    let scanCount = String(journalFolder.contents.filter(e => e.name.startsWith(scanEntryPrefix)).length + 1).padStart(
+      entryNumberDigits,
+      "0"
+    );
+    const scanName = scanEntryName(scanCount, state.data.name);
+    let scanPage = new JournalEntryPage({
+      name: scanName,
+      type: "text",
+      text: { content: scanContent },
+    });
+    scanEntry = await JournalEntry.create({
+      folder: journalFolder.id,
+      name: scanName,
+    });
+    scanEntry!.createEmbeddedDocuments("JournalEntryPage", [scanPage]);
+  }
+
+  scanEntry?.update({ ownership: { default: CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER } });
+  scanEntry?.sheet?.render(true);
+
+  return true;
+}
+
+async function printScanCard(state: FlowState<LancerFlowState.ScanData>): Promise<boolean> {
+  const scanOutput = game.settings.get(game.system.id, LANCER.setting_scan_outputs);
+  if (!["both", "chat"].includes(scanOutput)) return true;
+
+  if (!state.data) throw new TypeError(`Flowstate missing!`);
+  const template = `systems/${game.system.id}/templates/chat/scan-card.hbs`;
+  await renderTemplateStep(state.actor, template, state.data);
+  return true;
+}

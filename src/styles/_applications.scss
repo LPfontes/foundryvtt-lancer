@@ -35,10 +35,12 @@
     }
   }
 
-  // TODO: these should live somewhere else,
-  // and lancer-sheet probably doesn't get used?
-  .lancer.sheet,
-  .lancer-sheet {
+  .lancer.sheet {
+    .window-content {
+      padding: 0px;
+    }
+
+    // TODO: these should live somewhere else,
     .editor,
     .editor-content {
       height: -webkit-fill-available;
@@ -57,7 +59,84 @@
     }
   }
 
+  /* ===== JOURNAL STYLING ===== */
+
+  .theme-light .journal-entry-content {
+    --background: var(--lancer-light-app-bg);
+  }
+
+  .theme-dark .journal-entry-content {
+    --background: var(--background-color);
+  }
+
+  .theme-gms-red,
+  .theme-ssc,
+  .theme-ipsn {
+    .journal-entry-content {
+      color: var(--dark-text);
+    }
+  }
+
+  .theme-gms-dark,
+  .theme-msmc,
+  .theme-horus,
+  .theme-ha,
+  .theme-galsim {
+    .journal-entry-content {
+      color: var(--light-text);
+    }
+  }
+
+  .journal-entry-content {
+    font-family: var(--main-font-family);
+
+    h1, h2, h3, h4 {
+      color: var(--dark-text);
+      border-color: var(--primary-color);
+    }
+
+    input.title {
+      border: none;
+      border-left: 2px solid var(--primary-color);
+      border-bottom: 2px solid var(--primary-color);
+    }
+
+    .content-link {
+      background: var(--darken-2);
+    }
+  }
+
+  /* ===== PAUSE OVERLAY ===== */
+
+  #pause.lancer-pause {
+    &:before, &:after {
+      content: "";
+      display: block;
+      margin: -0.3rem;
+      min-height: 2px;
+      width: 100%;
+      background: linear-gradient(
+        to right,
+        transparent 0%,
+        var(--primary-color) 40%,
+        var(--primary-color) 60%,
+        transparent 100%
+      );
+    }
+
+    img {
+      filter: brightness(0) saturate(100%) invert(80%) sepia(49%) saturate(1%) hue-rotate(30deg) brightness(97%)
+        contrast(100%) drop-shadow(0 0 0.5rem var(--color-shadow-primary));
+    }
+    figcaption {
+      font-family: var(--header-font-family);
+      color: var(--light-text);
+      text-shadow: 0 0 0.5rem var(--color-shadow-primary);
+    }
+  }
+
   /* ===== RULES FOR ALL APPLICATIONS ===== */
+
   .application:not(#chat-popout) .window-content {
     h1,
     h2,

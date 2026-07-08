@@ -1,5 +1,50 @@
+@use "./variables" as *;
+
 @layer lancer.overrides {
+  /* ===== THEMING CLASSES ===== */
+  /* General-purpose theme color classes */
+  @each $theme-type in $theme-types {
+    /* Headers, buttons, and chips */
+    a.action.lancer-#{$theme-type},
+    .lancer-header.lancer-#{$theme-type},
+    .lancer-#{$theme-type} .lancer-header,
+    button.lancer-#{$theme-type},
+    .lancer-button.lancer-#{$theme-type},
+    .lancer-chip.lancer-#{$theme-type} {
+      background-color: var(--#{$theme-type}-color, fuschia);
+      color: var(--light-text, fuschia);
+    }
+
+    /* Text */
+    .lancer-#{$theme-type}-text {
+      color: var(--#{$theme-type}-color, fuschia);
+    }
+
+    /* Border */
+    .lancer-border-#{$theme-type} {
+      border-color: var(--#{$theme-type}-color, fuschia);
+    }
+
+    /* Foundry adds a bottom border to header elements. That's fine, but make it match. */
+    h1.lancer-#{$theme-type},
+    h2.lancer-#{$theme-type},
+    h3.lancer-#{$theme-type},
+    h4.lancer-#{$theme-type} {
+      border-color: var(--#{$theme-type}-color, fuschia);
+    }
+  }
+  /* Highlights */
+  .lancer-primary.highlight {
+    background-color: var(--primary-highlight, fuchsia);
+    color: var(--light-text, fuchsia);
+  }
+  .lancer-secondary.highlight {
+    background-color: var(--secondary-highlight, fuchsia);
+    color: var(--light-text, fuchsia);
+  }
+
   /* ===== RULES FOR NON-LANCER APPLICATIONS ===== */
+
   .application:not(#chat-popout) .window-content {
     font-family: var(--main-font-family);
   }
@@ -8,18 +53,26 @@
     --lancer-light-app-bg: #e1e1e1;
   }
 
-  .theme-light .application:not(.lancer):not(.journal-sheet) {
-    // Light mode and non-lancer
-    /* Set default backgrounds to a futuristic gundam light grey instead of parchment */
-    --background: var(--lancer-light-app-bg);
+  .theme-light {
+    /* Light mode and non-lancer */
+    .application:not(.lancer):not(.journal-sheet) {
+      /* Set default backgrounds to a futuristic gundam light grey instead of parchment */
+      --background: var(--lancer-light-app-bg);
+    }
+
+    .sidebar-tab {
+      --sidebar-background: var(--lancer-light-app-bg);
+    }
   }
 
-  .theme-light .journal-entry-content {
-    --background: var(--lancer-light-app-bg);
-  }
+  /* Simple fonts override */
+  body.lancer-simple-fonts {
+    --header-font-family: Helvetica, Arial, sans-serif;
 
-  .theme-light .sidebar-tab {
-    --sidebar-background: var(--lancer-light-app-bg);
+    /* Pause overlay is intentionally excluded from the simple fonts setting */
+    #pause.lancer-pause figcaption {
+      font-family: Orbitron, Helvetica, Arial, sans-serif;
+    }
   }
 
   // ==============================================
@@ -179,19 +232,6 @@
     --chat-message-background: var(--lancer-light-app-bg);
     background-color: var(--lancer-light-app-bg);
     font-family: var(--main-font-family);
-    // color: var(--dark-text);
-
-    // .message-header {
-    //   color: var(--dark-text);
-    // }
-
-    // h1,
-    // h2,
-    // h3,
-    // h4 {
-    //   font-family: var(--header-font-family);
-    //   color: var(--dark-text);
-    // }
   }
 
   /* ---------- */
@@ -284,7 +324,7 @@
   .tippy-box[data-theme~="lancer-large"] {
     background: var(--tooltip-background) !important;
     background-color: var(--tooltip-background) !important;
-    color: var(--tooltip-text);
+    color: var(--tooltip-text) !important;
     max-width: 50vw;
     border: 1px var(--primary-color) solid;
     border-radius: 4px;

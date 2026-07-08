@@ -1,6 +1,6 @@
 @layer lancer.defaults {
   /* ===== MODIFY CORE FOUNDRY VARIABLES ===== */
-  body.game.theme-ipsn .app {
+  body.theme-ipsn {
     --color-shadow-primary: #c6daf6;
   }
   /* ===== END CORE FOUNDRY VARIABLES ===== */
@@ -11,12 +11,12 @@
   body.theme-ipsn {
     /* Sheet theme vars */
     --primary-color: #1952a2;
-    --primary-highlight: color-mix(in srgb, var(--primary-color), #fff 55%);
+    --primary-highlight: color-mix(in srgb, var(--primary-color), #fff 25%);
     --light-text: #ffffff;
     --dark-text: #000000;
     --background-color: #dbdbdb;
     --secondary-color: #c77634;
-    --secondary-highlight: color-mix(in srgb, var(--secondary-color), #fff 55%);
+    --secondary-highlight: color-mix(in srgb, var(--secondary-color), #fff 25%);
     --secondary-text: #ffffff;
     --dark-gray-color: #8a949e;
     --light-gray-color: #cccccc;

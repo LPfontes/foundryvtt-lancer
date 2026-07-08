@@ -6,7 +6,7 @@ import { buildCounterHeader, buildCounterHTML } from "../helpers/item";
 import { ref_params, resolve_ref_element } from "../helpers/refs";
 import { inc_if, resolveDotpath } from "../helpers/commons";
 import { LancerActor, type LancerMECH, type LancerPILOT } from "./lancer-actor";
-import { fetchPilotViaCache, fetchPilotViaShareCode, pilotCache } from "../util/compcon";
+import { fetchV2PilotViaShareCode, fetchV3PilotViaShareCode } from "../util/compcon";
 import type { LancerFRAME } from "../item/lancer-item";
 import { clicker_num_input } from "../helpers/actor";
 import type { ResolvedDropData } from "../helpers/dragdrop";
@@ -14,7 +14,8 @@ import { EntryType } from "../enums";
 import type { PackedPilotData } from "../util/unpacking/packed-types";
 import { importCC } from "./import";
 
-const shareCodeMatcher = /^[A-Z0-9\d]{6}$/g;
+const shareCodeMatcherV2 = /^[A-Z0-9\d]{6}$/g;
+const shareCodeMatcherV3 = /^[A-Z0-9]{12}$/g;
 const COUNTER_MAX = 8;
 
 /**
@@ -67,45 +68,37 @@ export class LancerPilotSheet extends LancerActorSheet<EntryType.PILOT> {
       if (pilot.system.cloud_id) {
         download.on("click", async ev => {
           ev.stopPropagation();
+          if (!pilot.system.cloud_id)
+            return ui.notifications!.error("You must enter a Comp/Con pilot share code before downloading!");
 
           // Fetch data to sync
           let raw_pilot_data = null;
-          if (pilot.system.cloud_id.match(shareCodeMatcher)) {
+          if (pilot.system.cloud_id.match(shareCodeMatcherV3)) {
             // pilot share codes
-            ui.notifications!.info("Importing character from share code...");
-            console.log(`Attempting import with share code: ${pilot.system.cloud_id}`);
+            ui.notifications!.info("Importing character from V3 share code...");
+            console.log(`${lp} Attempting import with V3 share code: ${pilot.system.cloud_id}`);
             try {
-              raw_pilot_data = await fetchPilotViaShareCode(pilot.system.cloud_id);
+              raw_pilot_data = await fetchV3PilotViaShareCode(pilot.system.cloud_id);
             } catch (error) {
-              ui.notifications!.error("Error importing from share code. Share code may need to be refreshed.");
-              console.error(`Failed import with share code ${pilot.system.cloud_id}, error:`, error);
+              ui.notifications!.error("Error importing from V3 share code.");
+              console.error(`${lp} Failed import with V3 share code ${pilot.system.cloud_id}, error:`, error);
               return;
             }
-          } else if (pilot.system.cloud_id) {
-            // Vault ID from a logged-in Comp/Con account
-            ui.notifications!.info("Importing character from COMP/CON account...");
-            const cachedPilot = pilotCache().find(p => p.cloudID == pilot.system.cloud_id);
-            if (cachedPilot != undefined) {
-              try {
-                raw_pilot_data = await fetchPilotViaCache(cachedPilot);
-              } catch (error) {
-                ui.notifications!.error(
-                  "Failed to import from COMP/CON account. Try refreshing the page to reload pilot list."
-                );
-                console.error(`Failed to import vaultID ${pilot.system.cloud_id} via pilot list, error:`, error);
-                return;
-              }
-            } else {
+          } else if (pilot.system.cloud_id.match(shareCodeMatcherV2)) {
+            // pilot share codes
+            ui.notifications!.info("Importing character from V2 share code...");
+            console.log(`${lp} Attempting import with V2 share code: ${pilot.system.cloud_id}`);
+            try {
+              raw_pilot_data = await fetchV2PilotViaShareCode(pilot.system.cloud_id);
+            } catch (error) {
               ui.notifications!.error(
-                "Failed to import from COMP/CON account. Try refreshing the page to reload pilot list"
+                "Error importing from V2 share code. V2 share codes may no longer work, or this share code may need to be refreshed."
               );
-              console.error(`Failed to find pilot in cache, vaultID: ${pilot.system.cloud_id}`);
+              console.error(`${lp} Failed import with V2 share code ${pilot.system.cloud_id}, error:`, error);
               return;
             }
           } else {
-            ui.notifications!.error(
-              "Could not find character to import! No pilot selected via dropdown and no share code entered."
-            );
+            ui.notifications!.error("Could not find character to import! No share code entered.");
             return;
           }
           await importCC(this.actor as LancerPILOT, raw_pilot_data);
@@ -116,15 +109,6 @@ export class LancerPilotSheet extends LancerActorSheet<EntryType.PILOT> {
 
       // JSON Import
       html.find<HTMLInputElement>("input#pilot-json-import").on("change", ev => this._onPilotJsonUpload(ev));
-
-      // editing rawID clears vaultID
-      // (other way happens automatically because we prioritise vaultID in commit)
-      let rawInput = html.find('input[name="rawID"]');
-      rawInput.on("input", async ev => {
-        if ((ev.target as any).value != "") {
-          (html.find('select[name="vaultID"]')[0] as any).value = "";
-        }
-      });
 
       // Mech swapping
       let mechActivators = html.find(".activate-mech");
@@ -190,22 +174,6 @@ export class LancerPilotSheet extends LancerActorSheet<EntryType.PILOT> {
 
   async getData(): Promise<object> {
     const data: any = await super.getData(); // Not fully populated yet!
-
-    data.compConPilotList = pilotCache()
-      .sort((p1, p2) => {
-        if (p1.callsign < p2.callsign) return -1;
-        if (p1.callsign > p2.callsign) return 1;
-        if (p1.name < p2.name) return -1;
-        if (p1.name > p2.name) return 1;
-        return 0;
-      })
-      .reduce(
-        (acc, pilot) => {
-          acc[`${pilot.callsign} // ${pilot.name}`] = pilot.cloudID;
-          return acc;
-        },
-        {} as Record<string, string>
-      );
 
     return data;
   }

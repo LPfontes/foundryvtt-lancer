@@ -1,7 +1,8 @@
-import { AttackType, DamageType, NpcFeatureType, StabOptions1, StabOptions2, SystemType } from "../enums";
+import { AttackType, DamageType, NpcFeatureType, NpcTechType, StabOptions1, StabOptions2, SystemType } from "../enums";
 import { AccDiffHudData } from "../apps/acc_diff";
 import type { ActionData } from "../models/bits/action";
 import type { DamageData } from "../models/bits/damage";
+import type { RangeData } from "../models/bits/range";
 import { Tag, type TagData } from "../models/bits/tag";
 import { LancerToken } from "../token";
 import { DamageHudData } from "../apps/damage";
@@ -112,6 +113,7 @@ export namespace LancerFlowState {
 
     attack_type: AttackType; // Melee, Ranged, Quick Tech, Full Tech
     action: ActionData | null;
+    cost: number;
     effect?: string;
     on_attack?: string;
     on_hit?: string;
@@ -191,16 +193,86 @@ export namespace LancerFlowState {
     acc: number;
     action_path: string;
     action: ActionData | null;
+    cost: number;
     self_heat?: string; // The self heat roll string if present
     self_heat_result?: SelfHeatResult;
     detail: string;
     tags: Tag[];
   }
 
+  export interface ScanWeaponData {
+    name: string;
+    weapon_type: string;
+    attack_bonus?: number | null | undefined;
+    accuracy?: number | null | undefined;
+    range?: RangeData[];
+    damage?: DamageData[];
+    effect?: string;
+    on_hit?: string;
+    tags?: Tag[];
+  }
+
+  export interface ScanTechAttackData {
+    name: string;
+    type: NpcFeatureType;
+    effect: string;
+    tags?: Tag[];
+    tech_type?: NpcTechType;
+    range: RangeData;
+    // tech_attack should always be true, but it's hard to convince the types
+    tech_attack: boolean;
+    attack_bonus?: number;
+    accuracy?: number;
+    on_hit?: string;
+  }
+
+  export interface ScanSystemData {
+    name: string;
+    type: NpcFeatureType;
+    effect: string;
+    tags?: Tag[];
+    // Reactions
+    trigger?: string;
+    // Tech Actions
+    tech_type?: NpcTechType;
+  }
+
+  export interface ScanData {
+    target: LancerToken | null;
+    name: string;
+    img: string | null;
+    tier: number;
+    class: string;
+    templates: string[];
+    stats?: {
+      hull: number;
+      agi: number;
+      sys: number;
+      eng: number;
+      hp: number;
+      hpValue?: number;
+      heat?: number;
+      structure?: number;
+      stress?: number;
+      armor: number;
+      evasion: number;
+      edef: number;
+      speed: number;
+      size: number;
+      save: number;
+      sensor_range: number;
+    };
+    weapons?: ScanWeaponData[];
+    techAttacks?: ScanTechAttackData[];
+    systems?: ScanSystemData[];
+    traits?: ScanSystemData[];
+  }
+
   export interface SystemUseData {
     title: string;
     type: SystemType.System | SystemType.Mod | NpcFeatureType | null;
     effect: string;
+    cost: number;
 
     tags?: Tag[];
     self_heat?: string; // The self heat roll string if present
@@ -362,5 +434,6 @@ export namespace LancerFlowState {
     BasicAttack = "BasicAttack",
     Damage = "Damage",
     TechAttack = "TechAttack",
+    Scan = "Scan",
   }
 }

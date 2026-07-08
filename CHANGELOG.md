@@ -1,3 +1,74 @@
+# 3.1.3 (2026-06-29)
+
+## Bug Fixes
+
+- Fix some new CSS affecting the file picker UI unintentionally.
+
+# 3.1.2 (2026-06-27)
+
+## Bug Fixes
+
+- #952 - Follow the `cost` for limited uses on actions/systems/weapons, instead of always deducting one use.
+
+## Misc
+
+- Scan flow will now display error notifications to inform why it can't do a scan instead of failing silently.
+- Recognize and omit v3 LCPs from the LCP importer, along with error messages to inform the user.
+- Update and organize the Pilot import tab (RM-4://SYNC) to improve clarity and remove placeholder sections.
+
+# 3.1.1 (2026-06-01)
+
+## Bug Fixes
+
+- Fix a bug causing tech attacks to be treated as not-smart, comparing the attack rolls against evasion instead of e-def.
+
+# 3.1.0 (2026-05-31)
+
+## Features
+
+- #895 - Add a checkbox to the attack HUD for Smart, so that effects which grant an attack the Smart tag can be handled much more easily.
+- #946 - Add a setting to use a plain font (Helvetica) for headers, for those who find the stylized header font difficult to read.
+
+## Bug Fixes
+
+- #907 - Apply custom names for equipment imported from Comp/Con.
+- #942 - Fix some bugs with bond data when importing to a pilot with an existing bond.
+- #945 - Fix an error when placing Burst templates.
+- Fix an error in Scan flow when updating an existing journal if the expected journal page isn't found.
+
+# 3.0.0 (2026-05-20)
+
+## Features
+
+- #773 - Foundry v13 support!
+- **Breaking**: Removed support for migrating very old worlds (1.X and earlier) directly to newest version.
+- #886, #887 - Improved attack automation. Melee attacks ignore cover unless "thrown" is checked in the attack HUD, tech attacks always ignore cover.
+- Scan automation, now built into the system properly! Output can be set to chat only, journal only, or both. Start scans either from a mech character sheet, dragging the scan button to hotbar, or using the new Scan macro from the compendium.
+- Pause icon customization. Change which faction logo your game uses in the system settings.
+- Basic styling of journals to match selected Lancer theme. Not fancy, but at least they're not parchment anymore!
+- Chat card styling for hidden rolls to make it clearer that it is not a normal/public message.
+- A whole host of optimizations, fixes, improvements to sheet layouts, and styling that I didn't record in detail.
+
+## Bug Fixes
+
+- #896 - Ensure that system automation (using actions, attack rolls, etc...) use the current chat visibility setting.
+- #918 - Overheat check automation fixes. Fix a typo in the Meltdown result, and fix the button to properly roll an Engineering check.
+
+# 2.12.1 (2026-05-19)
+
+## Bug Fixes
+
+- #939 - Comp/Con v3 pilot imports now populate bond powers.
+- #940 - Fixed a bug which introduced some unnecessary damage types and prevented editing weapon damage to anything other than kinetic.
+- Fix a bug which was causing Comp/Con imports to use the wrong version parser in some cases.
+
+# 2.12.0 (2026-05-18)
+
+## Features
+
+- #878 - Add support for Comp/Con v3 pilot imports. V3 pilots can be imported from file or via share code, and V2 pilots can be imported from file.
+- Removed Comp/Con login feature. It requires libraries that are a pain to keep up with for security, and phantom deleted pilots were a perennial issue.
+
 # 2.11.2 (2026-04-03)
 
 ## Bug Fixes
@@ -1166,7 +1237,7 @@ Hotfix to correct new issue with pilot sheet not loading.
 
 # 0.1.0 (2020-07-19)
 
-## Alpha release!
+## Alpha release
 
 A huge thank you and shout-out to Animu36, Grygon, and Staubz, without whose help this initial release would have taken many more weeks!
 

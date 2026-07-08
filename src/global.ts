@@ -1,4 +1,4 @@
-import type { LancerActionManager } from "./module/action/action-manager";
+import type { LancerActionManager } from "./module/apps/action/action-manager";
 import type { AttackFlag } from "./module/flows/attack";
 import type { DamageFlag } from "./module/flows/damage";
 import type { DeployableModel } from "./module/models/actors/deployable";
@@ -129,8 +129,8 @@ declare module "fvtt-types/configuration" {
 
   namespace Hooks {
     interface HookConfig {
-        "lancer.statusesReady": () => boolean | void;
-        "lancer.statusInitComplete": () => boolean | void;
+      "lancer.statusesReady": () => boolean | void;
+      "lancer.statusInitComplete": () => boolean | void;
     }
   }
 
@@ -144,6 +144,7 @@ declare module "fvtt-types/configuration" {
     "lancer.autoOKillHeat": boolean;
     "lancer.automationOptions": typeof AutomationOptions;
     "lancer.automationSwitch": boolean;
+    "lancer.scanOutputs": string;
     "lancer.combat-tracker-appearance": typeof CombatTrackerAppearance;
     "lancer.combat-tracker-sort": boolean;
     "lancer.combatTrackerConfig": { sortTracker: boolean } | ClientSettings.Values["lancer.combatTrackerConfig"];
@@ -167,6 +168,22 @@ declare module "fvtt-types/configuration" {
         ssc: "lancer.uiTheme.ssc";
         ipsn: "lancer.uiTheme.ipsn";
         gal: "lancer.uiTheme.gal";
+      };
+    }>;
+    "lancer.pauseIcon": foundry.data.fields.StringField<{
+      choices: {
+        gms: "lancer.pauseIcon.gms";
+        horus: "lancer.pauseIcon.horus";
+        ha: "lancer.pauseIcon.ha";
+        ssc: "lancer.pauseIcon.ssc";
+        "ips-n": "lancer.pauseIcon.ipsn";
+        albatross: "lancer.pauseIcon.albatross";
+        aun: "lancer.pauseIcon.aun";
+        barony: "lancer.pauseIcon.barony";
+        horizon: "lancer.pauseIcon.horizon";
+        ra: "lancer.pauseIcon.ra";
+        sparri: "lancer.pauseIcon.sparri";
+        voladores: "lancer.pauseIcon.voladores";
       };
     }>;
     // "lancer.warningFor120": boolean; // Old setting, currently unused.

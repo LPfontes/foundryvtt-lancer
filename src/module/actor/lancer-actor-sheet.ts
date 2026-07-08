@@ -1,11 +1,12 @@
-import type { ActionType } from "../action";
-import { modAction } from "../action/action-tracker";
+import type { ActionType } from "../apps/action/actor-actions";
+import { modAction } from "../apps/action/actor-actions";
 import { InventoryDialog } from "../apps/inventory";
 import { LANCER } from "../config";
 import { LancerActiveEffect } from "../effects/lancer-active-effect";
 import { EntryType } from "../enums";
 import { LancerFlowState } from "../flows/interfaces";
 import { beginItemChatFlow } from "../flows/item";
+import { ScanFlow } from "../flows/scan";
 import { CollapseHandler, applyCollapseListeners, initializeCollapses } from "../helpers/collapse";
 import { handleGenControls, handlePopoutTextEditor } from "../helpers/commons";
 import {
@@ -338,6 +339,9 @@ export class LancerActorSheet<T extends LancerActorType> extends foundry.appv1.s
         case BasicFlowType.TechAttack:
           this.actor.beginBasicTechAttackFlow(flowArgs?.title ?? undefined);
           break;
+        case BasicFlowType.Scan:
+          const target = game.user.targets.first();
+          this.actor.beginScanFlow(target);
       }
     });
 

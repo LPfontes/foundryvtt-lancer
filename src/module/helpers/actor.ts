@@ -1,6 +1,6 @@
 import type { HelperOptions } from "handlebars";
-import type { ActionType } from "../action";
-import { actionIcon } from "../action/action-tracker";
+import type { ActionType } from "../apps/action/actor-actions";
+import { actionIcon } from "../apps/action/actor-actions";
 import type { LancerActor, LancerMECH, LancerNPC, LancerPILOT } from "../actor/lancer-actor";
 import { LANCER } from "../config";
 import { EntryType } from "../enums";
@@ -50,11 +50,12 @@ export function stat_edit_card_max(
 ): string {
   let data_val = resolveHelperDotpath(options, data_path, 0);
   let max_val = resolveHelperDotpath(options, max_path, 0);
+  const localizedTitle = game.i18n.localize(`lancer.common-sheet.shortStats.${title}`);
   return `
     <div class="stat-card card clipped">
       <div class="lancer-header lancer-primary ">
         <i class="${icon} i--4 i--light header-icon"> </i>
-        <span class="major">${title}</span>
+        <span class="major">${localizedTitle}</span>
       </div>
       ${std_x_of_y(data_path, data_val, max_val, "lancer-stat")}
     </div>
@@ -77,11 +78,12 @@ export function stat_edit_card(
       });
     }
   }
+  const localizedTitle = game.i18n.localize(`lancer.common-sheet.shortStats.${title}`);
   return `
     <div class="card clipped">
       <div class="lancer-header lancer-primary ">
         <i class="${icon} i--4 i--light header-icon"> </i>
-        <span class="major">${title}</span>
+        <span class="major">${localizedTitle}</span>
       </div>
       <div class="${flowButton ? "stat-flow-container" : "flexrow flex-center"}">
         ${flowButton}
@@ -119,11 +121,12 @@ export function stat_view_card(
       });
     }
   }
+  const localizedTitle = game.i18n.localize(`lancer.common-sheet.shortStats.${title}`);
   return `
     <div class="stat-card card clipped">
       <div class="lancer-header lancer-primary ">
         ${inc_if(`<i class="${icon} i--4 i--light header-icon"> </i>`, icon)}
-        <span class="major">${title}</span>
+        <span class="major">${localizedTitle}</span>
       </div>
       <div class="${leftFlowButton || rightFlowButton ? "stat-flow-container" : "flexrow flex-center"}">
         ${leftFlowButton}
@@ -194,10 +197,11 @@ export function clicker_stat_card(
       attackButton = _basicFlowButton(uuid, "BasicAttack", { icon: "cci cci-weapon" });
     }
   }
+  const localizedTitle = game.i18n.localize(`lancer.common-sheet.shortStats.${title}`);
   return `<div class="card clipped stat-container">
       <div class="lancer-header lancer-primary ">
         <i class="${icon} i--4 i--light header-icon"> </i>
-        <span class="major">${title}</span>
+        <span class="major">${localizedTitle}</span>
       </div>
       <div class="flexrow">
         ${statButton}
@@ -297,6 +301,9 @@ export function actor_flow_button(
     case BasicFlowType.TechAttack:
       mIcon = "cci-tech-quick";
       break;
+    case BasicFlowType.Scan:
+      mIcon = "cci cci-sensor";
+      break;
   }
 
   return `
@@ -310,11 +317,12 @@ export function tech_flow_card(title: string, icon: string, data_path: string, o
   let uuid = getActorUUID(options) ?? "unknown";
   let data_val = resolveHelperDotpath(options, data_path);
 
+  const localizedTitle = game.i18n.localize(`lancer.common-sheet.shortStats.${title}`);
   return `
     <div class="stat-card card clipped">
       <div class="lancer-header lancer-primary">
         ${inc_if(`<i class="${icon} i--4 i--light header-icon"> </i>`, icon)}
-        <span class="major">${title}</span>
+        <span class="major">${localizedTitle}</span>
       </div>
       <div class="stat-flow-container">
         ${_basicFlowButton(uuid, "TechAttack", { icon: "cci cci-tech-quick" })}
@@ -389,7 +397,7 @@ export function overchargeButton(actor: LancerMECH, overcharge_path: string, opt
   return `
     <div class="flexcol card clipped">
       <div class="lancer-header lancer-primary clipped-top flexrow">
-        <span class="major">OVERCHARGE</span>
+        <span class="major">${game.i18n.localize("lancer.common-sheet.shortStats.overcharge")}</span>
       </div>
       <div class="overcharge-container">
         ${flowButton}

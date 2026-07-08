@@ -32,6 +32,8 @@ import { rollEvalSync, tokenScrollText, type TokenScrollTextOptions } from "../u
 import { BurnFlow } from "../flows/burn";
 import { createChatMessageStep } from "../flows/_render";
 import { DamageRollFlow } from "../flows/damage";
+import { ScanFlow } from "../flows/scan";
+import type { LancerToken } from "../token";
 
 const lp = LANCER.log_prefix;
 
@@ -278,6 +280,8 @@ export class LancerActor<SubType extends Actor.SubType = Actor.SubType> extends 
     sys.sensor_range = 0;
     sys.tech_attack = 0;
     sys.statuses = {
+      cover_hard: false,
+      cover_soft: false,
       dangerzone: false,
       downandout: false,
       engaged: false,
@@ -780,7 +784,8 @@ export class LancerActor<SubType extends Actor.SubType = Actor.SubType> extends 
   async swapFrameImage(newFrame: LancerFRAME | LancerNPC_CLASS): Promise<void> {
     if (!game.users.activeGM?.isSelf || !(this.is_mech() || this.is_npc())) return;
 
-    let new_frame_path = frameToPath(newFrame?.name);
+    // Rebake support - remove trailing " [K]"
+    let new_frame_path = frameToPath(newFrame?.name.replace(/ \[K\]$/, ""));
     let default_img = this.is_mech()
       ? "systems/lancer/assets/icons/mech.svg"
       : "systems/lancer/assets/icons/npc_class.svg";
@@ -1098,6 +1103,11 @@ export class LancerActor<SubType extends Actor.SubType = Actor.SubType> extends 
       invade: true,
     };
     const flow = new TechAttackFlow(this, params);
+    return await flow.begin();
+  }
+
+  async beginScanFlow(target?: LancerToken): Promise<boolean> {
+    const flow = new ScanFlow(this, { target });
     return await flow.begin();
   }
 

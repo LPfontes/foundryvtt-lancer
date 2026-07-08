@@ -2,8 +2,17 @@
  * Module class for moderation of actor action data.
  */
 
-import type { ActionTrackingData, ActionType } from ".";
-import { LancerActor } from "../actor/lancer-actor";
+import { LancerActor } from "../../actor/lancer-actor";
+
+export type ActionTrackingData = {
+  protocol: boolean;
+  move: number;
+  full: boolean;
+  quick: boolean;
+  reaction: boolean;
+  free: boolean;
+};
+export type ActionType = keyof ActionTrackingData;
 
 /**
  * Similar to activationIcon, but for action tracking data
@@ -95,6 +104,7 @@ export async function modAction(actor: LancerActor, spend: boolean, type?: Actio
           actions.quick = false;
         } else {
           actions.full = true;
+          actions.quick = true;
         }
         break;
       case "protocol":
