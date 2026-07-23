@@ -56,7 +56,7 @@
     "@massif/ssmr-data": "^1.7.0",
     "@massif/wallflower-data": "^2.1.0",
     "jszip": "^3.10.1",
-    "lancer-data-pt-br": "file:../lancer-data-pt-br",
+    "lancer-data-pt-br": "github:LPfontes/lancer-data-pt-br",
     "tippy.js": "^6.3.1"
   },
   "lint-staged": {
