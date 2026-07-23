@@ -48,6 +48,33 @@
     "common-sheet": {
       "tabs": {
         "effects": "<EFEITOS//ATIVOS>"
+      },
+      "shortStats": {
+        "hull": "CLO",
+        "agi": "AGI",
+        "sys": "SIS",
+        "eng": "ENG",
+        "level": "NÍVEL DE LICENÇA",
+        "grit": "GRIT",
+        "tier": "PATAMAR",
+        "activations": "ATIV",
+        "hp": "HP",
+        "HP": "HP",
+        "evasion": "EVA",
+        "armor": "ARM",
+        "structure": "ESTRUT",
+        "heat": "CALOR",
+        "heatcap": "CAP CALOR",
+        "edef": "DEDEF",
+        "stress": "ESTRESSE",
+        "speed": "VEL",
+        "save": "SALV",
+        "sensor": "SENS",
+        "tech_attack": "ATQ TEC",
+        "repcap": "CAP REP",
+        "limited": "LIMITADO",
+        "license_level": "NÍV LICENÇA",
+        "weapon_mount": "PONTOS DE ARMA"
       }
     },
     "deployable-sheet": {
