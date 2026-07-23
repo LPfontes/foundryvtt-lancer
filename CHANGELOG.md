@@ -1,3 +1,9 @@
+# 3.1.4 (2026-07-23)
+
+## Localization
+
+- Adicionadas traduções em Português (Brasil) para estatísticas resumidas (shortStats).
+
 # 3.1.3 (2026-06-29)
 
 ## Bug Fixes
