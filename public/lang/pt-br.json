@@ -50,7 +50,7 @@
         "effects": "<EFEITOS//ATIVOS>"
       },
       "shortStats": {
-        "hull": "CLO",
+        "hull": "CASCO",
         "agi": "AGI",
         "sys": "SIS",
         "eng": "ENG",
@@ -58,23 +58,23 @@
         "grit": "GRIT",
         "tier": "PATAMAR",
         "activations": "ATIV",
-        "hp": "HP",
-        "HP": "HP",
+        "hp": "PV",
+        "HP": "PV",
         "evasion": "EVA",
         "armor": "ARM",
-        "structure": "ESTRUT",
+        "structure": "EST",
         "heat": "CALOR",
-        "heatcap": "CAP CALOR",
-        "edef": "DEDEF",
+        "heatcap": "CAP. CALOR",
+        "edef": "DEF-E",
         "stress": "ESTRESSE",
         "speed": "VEL",
         "save": "SALV",
         "sensor": "SENS",
-        "tech_attack": "ATQ TEC",
-        "repcap": "CAP REP",
+        "tech_attack": "ATQ. TEC",
+        "repcap": "CAP. REP",
         "limited": "LIMITADO",
-        "license_level": "NÍV LICENÇA",
-        "weapon_mount": "PONTOS DE ARMA"
+        "license_level": "NÍV. LICENÇA",
+        "weapon_mount": "ENCAIXE DE ARMA"
       }
     },
     "deployable-sheet": {

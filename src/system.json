@@ -191,9 +191,9 @@
       "path": "lang/en.json"
     },
     {
-      "lang": "pt-br",
+      "lang": "pt-BR",
       "name": "Português (Brasil)",
-      "path": "lang/pt-br.json"
+      "path": "lang/pt-BR.json"
     }
   ],
   "socket": true,
