@@ -429,7 +429,7 @@ export function npcFeatureBonusEffects(feature: LancerNPC_FEATURE) {
   let changes = [];
   for (let key of npc_keys) {
     let value = feature.system.bonus[key];
-    if (value !== null) {
+    if (value !== null && value !== undefined && value !== 0) {
       changes.push(makeNpcBonus(key, value, CONST.ACTIVE_EFFECT_MODES.ADD, BONUS_STAT_PRIORITY));
     }
   }
@@ -453,7 +453,7 @@ export function npcFeatureOverrideEffects(feature: LancerNPC_FEATURE) {
   let changes = [];
   for (let key of npc_keys) {
     let value = feature.system.override[key];
-    if (value !== null) {
+    if (value !== null && value !== undefined && value !== 0) {
       changes.push(makeNpcBonus(key, value, CONST.ACTIVE_EFFECT_MODES.OVERRIDE, FEATURE_OVERRIDE_PRIORITY));
     }
   }

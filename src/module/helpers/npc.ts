@@ -83,15 +83,72 @@ function npcFeatureScaffold(
   </div>`;
 }
 
+const npcStatLabels: Record<string, string> = {
+  activations: "ACTIVATIONS",
+  armor: "ARMOR",
+  hp: "HP",
+  evasion: "EVASION",
+  edef: "E-DEF",
+  heatcap: "HEAT CAP",
+  speed: "SPEED",
+  sensor_range: "SENSORS",
+  save: "SAVE",
+  hull: "HULL",
+  agi: "AGI",
+  sys: "SYS",
+  eng: "ENG",
+  size: "SIZE",
+  structure: "STRUCTURE",
+  stress: "STRESS",
+};
+
+export function npcFeatureBonusBadges(npcFeature: LancerNPC_FEATURE): string[] {
+  let badges: string[] = [];
+  if (npcFeature.system.bonus) {
+    for (let [key, label] of Object.entries(npcStatLabels)) {
+      let val = (npcFeature.system.bonus as any)[key];
+      if (val !== null && val !== undefined && val !== 0) {
+        let text = `${val > 0 ? "+" : ""}${val} ${label}`;
+        badges.push(
+          `<div class="compact-acc" data-tooltip="Stat Bonus">
+            <i style="margin-right: 5px;" class="fas fa-plus-circle i--4"></i>
+            <span class="medium">${text}</span>
+          </div>`
+        );
+      }
+    }
+  }
+  if (npcFeature.system.override) {
+    for (let [key, label] of Object.entries(npcStatLabels)) {
+      let val = (npcFeature.system.override as any)[key];
+      if (val !== null && val !== undefined && val !== 0) {
+        let text = `${label}: ${val}`;
+        badges.push(
+          `<div class="compact-acc" data-tooltip="Stat Override">
+            <i style="margin-right: 5px;" class="fas fa-pen i--4"></i>
+            <span class="medium">${text} (OVERRIDE)</span>
+          </div>`
+        );
+      }
+    }
+  }
+  return badges;
+}
+
 export function npcReactionView(path: string, options: HelperOptions): string {
   let npcFeature =
     (options.hash["item"] as LancerNPC_FEATURE) ?? resolveHelperDotpath<LancerNPC_FEATURE>(options, path);
   if (!npcFeature) return "";
   options.hash["tags"] = npcFeature.system.tags;
+  let bonusBadges = npcFeatureBonusBadges(npcFeature);
+  let bonusHeader = bonusBadges.length
+    ? `<div class="flexrow no-wrap">${bonusBadges.join('<span class="vsep"></span>')}</div>`
+    : "";
   return npcFeatureScaffold(
     path,
     npcFeature,
     `<div class="flexcol lancer-body">
+      ${bonusHeader}
       ${npcFeature.system.tags.find(tag => tag.lid === "tg_limited") ? limitedUsesIndicator(npcFeature, path) : ""}
       ${npcFeature.system.tags.find(tag => tag.lid === "tg_recharge") ? chargedIndicator(npcFeature, path) : ""}
       ${effectBox("TRIGGER", (npcFeature.system as SystemTemplates.NPC.ReactionData).trigger, { flow: true })}
@@ -108,10 +165,15 @@ export function npcSystemTraitView(path: string, options: HelperOptions): string
     (options.hash["item"] as LancerNPC_FEATURE) ?? resolveHelperDotpath<LancerNPC_FEATURE>(options, path);
   if (!npcFeature) return "";
   options.hash["tags"] = npcFeature.system.tags;
+  let bonusBadges = npcFeatureBonusBadges(npcFeature);
+  let bonusHeader = bonusBadges.length
+    ? `<div class="flexrow no-wrap">${bonusBadges.join('<span class="vsep"></span>')}</div>`
+    : "";
   return npcFeatureScaffold(
     path,
     npcFeature,
     `<div class="flexcol lancer-body">
+      ${bonusHeader}
       ${npcFeature.system.tags.find(tag => tag.lid === "tg_limited") ? limitedUsesIndicator(npcFeature, path) : ""}
       ${npcFeature.system.tags.find(tag => tag.lid === "tg_recharge") ? chargedIndicator(npcFeature, path) : ""}
       ${effectBox("EFFECT", npcFeature.system.effect, { flow: true })}
@@ -152,6 +214,11 @@ export function npcTechView(path: string, options: HelperOptions) {
     subheaderItems.push(npcAccuracyView(featureData.accuracy[tierIndex]));
   }
 
+  let bonusBadges = npcFeatureBonusBadges(npcFeature);
+  if (bonusBadges.length) {
+    subheader2Items.push(...bonusBadges);
+  }
+
   if (featureData.tags.find(tag => tag.is_recharge)) {
     subheaderItems.push(chargedIndicator(npcFeature, path));
   }
@@ -167,7 +234,7 @@ export function npcTechView(path: string, options: HelperOptions) {
         ${subheaderItems.join(sep)}
       </div>
       <div class="flexrow no-wrap">
-        ${subheader2Items.join()}
+        ${subheader2Items.join(sep)}
       </div>
       <div class="flexcol" style="padding: 0 10px;">
         ${effectBox("EFFECT", featureData.effect, { flow: !featureData.tech_attack })}
@@ -185,7 +252,7 @@ export function npcWeaponView(path: string, options: HelperOptions): string {
     (options.hash["item"] as LancerNPC_FEATURE) ?? resolveHelperDotpath<LancerNPC_FEATURE>(options, path);
   if (!npcFeature || !npcFeature.is_weapon()) return "";
   options.hash["tags"] = npcFeature.system.tags;
-  let featureData = npcFeature.system as SystemTemplates.NPC.WeaponData;
+  let featureData = npcFeature.system as unknown as SystemTemplates.NPC.WeaponData;
 
   // Get the tier (or default 1)
   let tierIndex: number = (options.hash["tier"] ?? 1) - 1;
@@ -216,6 +283,11 @@ export function npcWeaponView(path: string, options: HelperOptions): string {
     subheaderItems.push(damageArrayView(featureData.damage[tierIndex], { ...options, rollable: true }));
   }
 
+  let bonusBadges = npcFeatureBonusBadges(npcFeature);
+  if (bonusBadges.length) {
+    subheader2Items.push(...bonusBadges);
+  }
+
   // Bookkeeping stuff
   if (featureData.tags.find(t => t.is_recharge)) {
     subheader2Items.push(chargedIndicator(npcFeature, path));
@@ -232,7 +304,7 @@ export function npcWeaponView(path: string, options: HelperOptions): string {
         ${subheaderItems.join(sep)}
       </div>
       <div class="flexrow no-wrap">
-        ${subheader2Items.join()}
+        ${subheader2Items.join(sep)}
       </div>
       <div>
         <span>${featureData.weapon_type} // ${npcFeature.system.origin.name} ${

@@ -201,5 +201,52 @@
       </div>
     {{/if}}
     {{{item-edit-arrayed-tags "system.tags" "TAGS"}}}
+    {{! Stat Bonuses & Overrides }}
+    <details class="card clipped margin-top" open style="margin-top: 10px">
+      <summary class="lancer-header lancer-primary major" style="cursor: pointer">
+        <span>STAT BONUSES & OVERRIDES</span>
+      </summary>
+      <div class="flexcol gap-5" style="padding: 8px">
+        <span class="minor bold">STAT BONUSES (FLAT MODIFIERS)</span>
+        <div class="wraprow quadruple">
+          {{{std-num-input "system.bonus.armor" label="ARMOR"}}}
+          {{{std-num-input "system.bonus.hp" label="HP"}}}
+          {{{std-num-input "system.bonus.evasion" label="EVASION"}}}
+          {{{std-num-input "system.bonus.edef" label="E-DEF"}}}
+          {{{std-num-input "system.bonus.heatcap" label="HEAT CAP"}}}
+          {{{std-num-input "system.bonus.speed" label="SPEED"}}}
+          {{{std-num-input "system.bonus.sensor_range" label="SENSORS"}}}
+          {{{std-num-input "system.bonus.save" label="SAVE"}}}
+          {{{std-num-input "system.bonus.hull" label="HULL"}}}
+          {{{std-num-input "system.bonus.agi" label="AGI"}}}
+          {{{std-num-input "system.bonus.sys" label="SYS"}}}
+          {{{std-num-input "system.bonus.eng" label="ENG"}}}
+          {{{std-num-input "system.bonus.size" label="SIZE"}}}
+          {{{std-num-input "system.bonus.structure" label="STRUCTURE"}}}
+          {{{std-num-input "system.bonus.stress" label="STRESS"}}}
+          {{{std-num-input "system.bonus.activations" label="ACTIVATIONS"}}}
+        </div>
+
+        <span class="minor bold" style="margin-top: 10px">STAT OVERRIDES (EXACT VALUE)</span>
+        <div class="wraprow quadruple">
+          {{{std-num-input "system.override.armor" label="ARMOR"}}}
+          {{{std-num-input "system.override.hp" label="HP"}}}
+          {{{std-num-input "system.override.evasion" label="EVASION"}}}
+          {{{std-num-input "system.override.edef" label="E-DEF"}}}
+          {{{std-num-input "system.override.heatcap" label="HEAT CAP"}}}
+          {{{std-num-input "system.override.speed" label="SPEED"}}}
+          {{{std-num-input "system.override.sensor_range" label="SENSORS"}}}
+          {{{std-num-input "system.override.save" label="SAVE"}}}
+          {{{std-num-input "system.override.hull" label="HULL"}}}
+          {{{std-num-input "system.override.agi" label="AGI"}}}
+          {{{std-num-input "system.override.sys" label="SYS"}}}
+          {{{std-num-input "system.override.eng" label="ENG"}}}
+          {{{std-num-input "system.override.size" label="SIZE"}}}
+          {{{std-num-input "system.override.structure" label="STRUCTURE"}}}
+          {{{std-num-input "system.override.stress" label="STRESS"}}}
+          {{{std-num-input "system.override.activations" label="ACTIVATIONS"}}}
+        </div>
+      </div>
+    </details>
   </section>
 </form>

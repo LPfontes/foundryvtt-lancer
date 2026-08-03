@@ -37,6 +37,11 @@
     "LancerLicenseSheet": "Lancer System License Sheet",
     "LancerNPCClassSheet": "Lancer System NPC Class/Template Sheet",
     "LancerNPCFeatureSheet": "Lancer System NPC Feature Sheet",
+    "npc_feature": {
+      "stat_bonuses": "STAT BONUSES & OVERRIDES",
+      "bonuses_flat": "STAT BONUSES (FLAT MODIFIERS)",
+      "overrides_exact": "STAT OVERRIDES (EXACT VALUE)"
+    },
     "Actor": {
       "FIELDS": {
         "activations": {
@@ -118,7 +123,8 @@
       },
       "stats": {
         "label": "BASE STATS"
-      }
+      },
+      "sync_owner_stats": "SYNC OWNER MECH STATS (EVASION, E-DEF, SPEED)"
     },
     "mech-sheet": {
       "header": {
@@ -565,6 +571,41 @@
         "forced": "Forced Move",
         "ignore": "Ignore Terrain",
         "teleport": "Teleport (Ability)"
+      }
+    },
+    "talent_hud": {
+      "title": "Talents ({name})",
+      "view_description": "View talent description",
+      "acc_label": "Acc",
+      "diff_label": "Diff",
+      "rank_badge": "Rank {rank}",
+      "rank_title": "Rank {rank}",
+      "summary_label": "Talent Bonuses:",
+      "summary_acc": "+{acc} Accuracy",
+      "summary_diff": "-{diff} Difficulty"
+    },
+    "damage_hud": {
+      "base_damage": "Base Damage",
+      "add_base_type": "Add a base damage type",
+      "bonus_damage": "Bonus Damage",
+      "add_bonus_type": "Add a bonus damage type",
+      "configuration": "Configuration",
+      "ap": "Armor Piercing (AP)",
+      "overkill": "Overkill",
+      "paracausal": "Cannot be Reduced",
+      "paracausal_tooltip": "For 'cannot be reduced' effects like the Paracausal mod",
+      "half_damage": "Half Damage",
+      "half_damage_tooltip": "For effects which cause the attacker to deal half damage in addition to resistance, like Heavy Gunner",
+      "reliable": "Reliable",
+      "roll": "Roll",
+      "cancel": "Cancel",
+      "remove_damage_type": "Remove this damage type",
+      "target_bonus": "Bonus",
+      "add_target_bonus": "Add a bonus damage type for only this target",
+      "hit_quality": {
+        "crit": "Crit",
+        "hit": "Hit",
+        "miss": "Miss"
       }
     }
   },

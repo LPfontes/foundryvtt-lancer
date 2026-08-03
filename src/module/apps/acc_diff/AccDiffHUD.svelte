@@ -15,8 +15,9 @@
   import HudCheckbox from "../components/HudCheckbox.svelte";
   import { LancerToken } from "../../token";
   import AccDiffInput from "./AccDiffInput.svelte";
-  import { type AccDiffHudData } from "./data.svelte";
+  import { type AccDiffHudData, getPilotTalents } from "./data.svelte";
   import { tokenDocFromUuidSync } from "../../util/misc";
+  import type { LancerTALENT } from "../../item/lancer-item";
 
   /* ===== PROPS ===== */
 
@@ -37,6 +38,7 @@
 
   const dispatch = createEventDispatcher();
   let submitted = $state(false);
+  let expandedTalents: Record<string, boolean> = $state({});
   const hookCallbacks: Record<string, number> = {};
 
   /* ===== DERIVED VALUES ===== */
@@ -47,6 +49,7 @@
   const base = $derived(data.base);
   const weapon = $derived(data.weapon);
   const targets = $derived(data.targets);
+  const talents = $derived(getPilotTalents(lancerActor));
 
   const rollerName = $derived(lancerActor ? ` -- ${lancerActor.token?.name || lancerActor.name}` : "");
   const profile = $derived(lancerItem ? findProfile() : null);
@@ -62,6 +65,54 @@
   const diffTargetPlugins = $derived(
     targets.length === 1 ? Object.values(targets[0].plugins).filter(plugin => plugin.category === "diff") : []
   );
+
+  function getTalentAcc(lid: string): number {
+    return base.talentModifiers[lid]?.accuracy || 0;
+  }
+
+  function getTalentDiff(lid: string): number {
+    return base.talentModifiers[lid]?.difficulty || 0;
+  }
+
+  function setTalentAcc(talent: LancerTALENT, delta: number) {
+    const lid = talent.system.lid || talent.id || talent.name;
+    const currentAcc = getTalentAcc(lid);
+    const currentDiff = getTalentDiff(lid);
+    const newAcc = Math.max(0, currentAcc + delta);
+
+    if (newAcc === 0 && currentDiff === 0) {
+      delete base.talentModifiers[lid];
+    } else {
+      base.talentModifiers[lid] = {
+        lid,
+        name: talent.name,
+        accuracy: newAcc,
+        difficulty: currentDiff,
+      };
+    }
+  }
+
+  function setTalentDiff(talent: LancerTALENT, delta: number) {
+    const lid = talent.system.lid || talent.id || talent.name;
+    const currentAcc = getTalentAcc(lid);
+    const currentDiff = getTalentDiff(lid);
+    const newDiff = Math.max(0, currentDiff + delta);
+
+    if (currentAcc === 0 && newDiff === 0) {
+      delete base.talentModifiers[lid];
+    } else {
+      base.talentModifiers[lid] = {
+        lid,
+        name: talent.name,
+        accuracy: currentAcc,
+        difficulty: newDiff,
+      };
+    }
+  }
+
+  function toggleTalentDescription(lid: string) {
+    expandedTalents[lid] = !expandedTalents[lid];
+  }
 
   /* ===== FUNCTIONS ===== */
 

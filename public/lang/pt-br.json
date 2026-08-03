@@ -37,6 +37,11 @@
     "LancerLicenseSheet": "Ficha de Licença do Sistema Lancer",
     "LancerNPCClassSheet": "Ficha de Classe/Modelo de PNJ do Sistema Lancer",
     "LancerNPCFeatureSheet": "Ficha de Característica de PNJ do Sistema Lancer",
+    "npc_feature": {
+      "stat_bonuses": "BÔNUS DE STATUS E SUBSTITUIÇÕES",
+      "bonuses_flat": "BÔNUS DE STATUS (MODIFICADORES)",
+      "overrides_exact": "SUBSTITUIÇÕES DE STATUS (VALORES EXATOS)"
+    },
     "Actor": {
       "FIELDS": {
         "activations": { "label": "Ativações" }
@@ -108,7 +113,8 @@
       },
       "stats": {
         "label": "ATRIBUTOS BASE"
-      }
+      },
+      "sync_owner_stats": "SINCRONIZAR STATUS DO MECHA PROPRIETÁRIO (EVASÃO, DEFESA-E, VELOCIDADE)"
     },
     "mech-sheet": {
       "header": {
@@ -526,6 +532,41 @@
         "forced": "Movimento Forçado",
         "ignore": "Ignorar Terreno",
         "teleport": "Teletransporte (Habilidade)"
+      }
+    },
+    "talent_hud": {
+      "title": "Talentos ({name})",
+      "view_description": "Ver descrição do talento",
+      "acc_label": "Acc",
+      "diff_label": "Diff",
+      "rank_badge": "Ranque {rank}",
+      "rank_title": "Ranque {rank}",
+      "summary_label": "Bônus de Talentos:",
+      "summary_acc": "+{acc} Acurácia",
+      "summary_diff": "-{diff} Dificuldade"
+    },
+    "damage_hud": {
+      "base_damage": "Dano Base",
+      "add_base_type": "Adicionar tipo de dano base",
+      "bonus_damage": "Dano Bônus",
+      "add_bonus_type": "Adicionar tipo de dano bônus",
+      "configuration": "Configuração",
+      "ap": "Perfurante de Armadura (AP)",
+      "overkill": "Overkill",
+      "paracausal": "Não Pode Ser Reduzido",
+      "paracausal_tooltip": "Para efeitos de 'não pode ser reduzido' como o mod Paracausal",
+      "half_damage": "Metade do Dano",
+      "half_damage_tooltip": "Para efeitos que causam metade do dano em adição à resistência, como Atirador Pesado",
+      "reliable": "Confiável",
+      "roll": "Rolar",
+      "cancel": "Cancelar",
+      "remove_damage_type": "Remover este tipo de dano",
+      "target_bonus": "Bônus",
+      "add_target_bonus": "Adicionar tipo de dano bônus apenas para este alvo",
+      "hit_quality": {
+        "crit": "Crítico",
+        "hit": "Acerto",
+        "miss": "Erro"
       }
     }
   },

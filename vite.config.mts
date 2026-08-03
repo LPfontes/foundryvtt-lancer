@@ -24,6 +24,7 @@ export default defineConfig({
     include: ["@massif/lancer-data", "lancer-data-pt-br"],
   },
   build: {
+    outDir: "C:/Users/lpfon/AppData/Local/FoundryVTT/Data/systems/lancer",
     emptyOutDir: false,
     sourcemap: true,
     lib: {

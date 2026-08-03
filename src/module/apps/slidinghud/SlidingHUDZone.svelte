@@ -8,7 +8,9 @@
   import { sidebarWidth } from "./sidebar-width";
   import { isDragging } from "./is-dragging";
   import AccDiffHud from "../acc_diff/AccDiffHUD.svelte";
+  import TalentAccDiffHud from "../acc_diff/TalentAccDiffHUD.svelte";
   import DamageHud from "../damage/DamageHUD.svelte";
+  import TalentDamageHud from "../damage/TalentDamageHUD.svelte";
   import StructStressHud from "../struct_stress/StructStressHUD.svelte";
 
   let {
@@ -25,6 +27,8 @@
     damage: DamageHud,
     struct: StructStressHud,
     stress: StructStressHud,
+    talent: TalentAccDiffHud,
+    talentDamage: TalentDamageHud,
   });
 
   // @hmr:keep
@@ -39,6 +43,8 @@
     damage: { open: null },
     struct: { open: null },
     stress: { open: null },
+    talent: { open: null },
+    talentDamage: { open: null },
   });
 
   export function open(key: string, data: any) {
@@ -51,6 +57,18 @@
     dispatch(`${key}.cancel`);
     huds[key].open = null;
     huds[key].data = null;
+    if (key === "attack" || key === "hase") {
+      if (huds.talent) {
+        huds.talent.open = null;
+        huds.talent.data = null;
+      }
+    }
+    if (key === "damage") {
+      if (huds.talentDamage) {
+        huds.talentDamage.open = null;
+        huds.talentDamage.data = null;
+      }
+    }
   }
 
   export function refresh(key: string, data: any) {
@@ -76,6 +94,18 @@
     // no matter why we get an event from a child, we should close it, it's _done_
     huds[key].open = null;
     huds[key].data = null;
+    if (key === "attack" || key === "hase") {
+      if (huds.talent) {
+        huds.talent.open = null;
+        huds.talent.data = null;
+      }
+    }
+    if (key === "damage") {
+      if (huds.talentDamage) {
+        huds.talentDamage.open = null;
+        huds.talentDamage.data = null;
+      }
+    }
   }
 
   const visibleHudsKeys = $derived(

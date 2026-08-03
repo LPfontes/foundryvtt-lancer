@@ -71,6 +71,11 @@
 
     {{! Config Tab }}
     <div class="tab manage flexcol" data-group="primary" data-tab="config">
+      <div class="card clipped flexrow" style="padding: 8px 12px; margin-bottom: 10px; align-items: center">
+        {{
+          {std-checkbox "system.sync_owner_stats" label=(localize "lancer.deployable-sheet.sync_owner_stats") default=true}
+        }}
+      </div>
       {{! Frame Stats }}
       <div class="card clipped" style="text-align: left">
         <span class="lancer-header lancer-primary major" style="text-align: center">{{

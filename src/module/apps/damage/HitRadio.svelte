@@ -13,10 +13,10 @@
 
   let id = `damage-quality-input-${counter++}`;
 
-  let inputs = [
-    { slug: "crit", human: "Crit", value: 2, icon: "fas fa-explosion" },
-    { slug: "hit", human: "Hit", value: 1, icon: "fas fa-crosshairs" },
-    { slug: "miss", human: "Miss", value: 0, icon: "mdi mdi-call-missed" },
+  const inputs = [
+    { slug: "crit", key: "crit", value: 2, icon: "fas fa-explosion" },
+    { slug: "hit", key: "hit", value: 1, icon: "fas fa-crosshairs" },
+    { slug: "miss", key: "miss", value: 0, icon: "mdi mdi-call-missed" },
   ];
 
   let [send, recv] = crossfade({});
@@ -24,6 +24,7 @@
 
 <div class="lancer-hit-quality-radio {klass}" class:disabled>
   {#each inputs as input}
+    {@const labelText = game.i18n.localize(`lancer.damage_hud.hit_quality.${input.key}`)}
     <input
       type="radio"
       id="{id}-{input.slug}"
@@ -32,9 +33,9 @@
       value={input.value}
       {disabled}
     >
-    <label for="{id}-{input.slug}" class="lancer-hit-quality-radio-label {labelClass}" data-tooltip={input.human}>
+    <label for="{id}-{input.slug}" class="lancer-hit-quality-radio-label {labelClass}" data-tooltip={labelText}>
       <i class="{input.icon} i--2"></i>
-      <span class="no-grow">{input.human}</span>
+      <span class="no-grow">{labelText}</span>
       {#if input.value == quality}
         <div class="hit-quality-arrow" in:send={{ key: id }} out:recv={{ key: id }}></div>
       {/if}

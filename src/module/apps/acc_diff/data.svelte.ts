@@ -1,6 +1,6 @@
 import type { AccDiffHudPlugin, AccDiffHudPluginData } from "./plugin";
 import { LancerActor } from "../../actor/lancer-actor";
-import { LancerItem } from "../../item/lancer-item";
+import { LancerItem, type LancerTALENT } from "../../item/lancer-item";
 
 import Invisibility from "./invisibility";
 import Spotter from "./spotter";
@@ -12,6 +12,24 @@ export enum Cover {
   None = 0,
   Soft = 1,
   Hard = 2,
+}
+
+export interface TalentModifier {
+  lid: string;
+  name: string;
+  accuracy: number;
+  difficulty: number;
+}
+
+export function getPilotTalents(actor?: LancerActor | null): LancerTALENT[] {
+  if (!actor) return [];
+  if (actor.is_pilot()) {
+    return (actor.itemTypes.talent as LancerTALENT[]) || [];
+  }
+  if (actor.is_mech()) {
+    return (actor.system.pilot?.value?.itemTypes.talent as LancerTALENT[]) || [];
+  }
+  return [];
 }
 
 export interface AccDiffHudWeaponParams {
@@ -100,6 +118,7 @@ export interface AccDiffHudBaseParams {
   difficulty: number;
   cover: Cover;
   plugins: { [k: string]: AccDiffHudPluginData };
+  talentModifiers?: Record<string, TalentModifier>;
 }
 
 export class AccDiffHudBase {
@@ -109,6 +128,7 @@ export class AccDiffHudBase {
   difficulty: number;
   cover: Cover;
   plugins: { [k: string]: AccDiffHudPluginData };
+  talentModifiers: Record<string, TalentModifier>;
   #weapon!: AccDiffHudWeapon; // never use this class before calling hydrate
 
   // Derived properties
@@ -123,8 +143,17 @@ export class AccDiffHudBase {
     this.difficulty = $state(obj.difficulty);
     this.cover = $state(obj.cover);
     this.plugins = $state(obj.plugins);
+    this.talentModifiers = $state(obj.talentModifiers ?? {});
 
     this.total = $derived(this._total());
+  }
+
+  get talentAccuracy(): number {
+    return Object.values(this.talentModifiers).reduce((sum, t) => sum + (t.accuracy || 0), 0);
+  }
+
+  get talentDifficulty(): number {
+    return Object.values(this.talentModifiers).reduce((sum, t) => sum + (t.difficulty || 0), 0);
   }
 
   get raw() {
@@ -135,6 +164,7 @@ export class AccDiffHudBase {
       difficulty: this.difficulty,
       cover: this.cover,
       plugins: this.plugins,
+      talentModifiers: this.talentModifiers,
     };
   }
 
@@ -146,7 +176,9 @@ export class AccDiffHudBase {
   }
 
   _total() {
-    return this.accuracy - this.difficulty + this.#weapon.total(this.cover);
+    return (
+      this.accuracy + this.talentAccuracy - this.difficulty - this.talentDifficulty + this.#weapon.total(this.cover)
+    );
   }
 }
 
@@ -155,6 +187,7 @@ export interface AccDiffHudTargetParams extends AccDiffHudBaseParams {
   consumeLockOn: boolean;
   prone: boolean;
   stunned: boolean;
+  talentModifiers: Record<string, TalentModifier>;
 }
 
 export class AccDiffHudTarget extends AccDiffHudBase {
@@ -200,6 +233,7 @@ export class AccDiffHudTarget extends AccDiffHudBase {
       prone: this.prone,
       stunned: this.stunned,
       plugins: this.plugins,
+      talentModifiers: this.talentModifiers,
     };
   }
 
@@ -222,6 +256,7 @@ export class AccDiffHudTarget extends AccDiffHudBase {
       prone: t.actor?.system.statuses.prone || false,
       stunned: t.actor?.system.statuses.stunned || false,
       plugins: {},
+      talentModifiers: {},
     };
     for (let plugin of AccDiffHudData.targetedPlugins) {
       ret.plugins[plugin.slug] = plugin.perTarget!(t);
@@ -240,7 +275,8 @@ export class AccDiffHudTarget extends AccDiffHudBase {
   _total() {
     let base = this.accuracy - this.difficulty + this.#weapon.total(this.cover);
     // the only thing we actually use base for is the untyped bonuses
-    let raw = base + this.#base.accuracy - this.#base.difficulty;
+    let raw =
+      base + (this.#base.accuracy + this.#base.talentAccuracy) - (this.#base.difficulty + this.#base.talentDifficulty);
     let lockon = this.usingLockOn ? 1 : 0;
     let prone = this.prone ? 1 : 0;
 
@@ -452,6 +488,7 @@ export class AccDiffHudData {
           prone: t.actor?.system.statuses.prone || false,
           stunned: t.actor?.system.statuses.stunned || false,
           plugins: {} as { [k: string]: any },
+          talentModifiers: {},
         };
         for (let plugin of this.targetedPlugins) {
           ret.plugins[plugin.slug] = plugin.perTarget!(t);

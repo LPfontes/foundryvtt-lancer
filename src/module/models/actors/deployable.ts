@@ -34,6 +34,7 @@ const defineDeployableSchema = () => ({
     size: new fields.NumberField({ min: 0.5, integer: false, nullable: false, initial: 0.5 }),
     speed: new fields.NumberField({ min: 0, integer: true, nullable: false, initial: 0 }),
   }),
+  sync_owner_stats: new fields.BooleanField({ initial: true }),
   cost: new fields.NumberField({ min: 0, integer: true, nullable: false, initial: 1 }),
   instances: new fields.NumberField({ min: 1, integer: true, nullable: false, initial: 1 }),
   deactivation: new fields.StringField({ choices: Object.values(ActivationType), initial: null, nullable: true }),

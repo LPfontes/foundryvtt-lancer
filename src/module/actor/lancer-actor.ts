@@ -410,9 +410,10 @@ export class LancerActor<SubType extends Actor.SubType = Actor.SubType> extends 
       this.system.hp.max -= this.system.grit;
     }
 
-    // Deployables: calculate max hp
+    // Deployables: calculate max hp and sync owner stats
     if (this.is_deployable()) {
       this.system.hp.max = rollEvalSync(`${this.system.stats.hp} + ${this.system.hp_bonus}`, this.getRollData()) || 5;
+      this.syncMechStats();
     }
   }
 
@@ -758,6 +759,31 @@ export class LancerActor<SubType extends Actor.SubType = Actor.SubType> extends 
   }
   is_deployable(): this is LancerDEPLOYABLE {
     return this.type === EntryType.DEPLOYABLE;
+  }
+
+  /**
+   * Synchronizes Evasion, E-Defense, and Speed from the owner mech (or NPC owner) to this deployable.
+   * @returns {boolean} True if stats were synchronized, false otherwise.
+   */
+  syncMechStats(): boolean {
+    if (!this.is_deployable()) return false;
+    if ((this.system as any).sync_owner_stats === false) return false;
+    const owner =
+      (this.system.owner?.value as LancerActor | null) ??
+      (this.system.owner?.id ? (fromUuidSync(this.system.owner.id) as LancerActor | null) : null);
+    if (!owner) return false;
+
+    if (typeof owner.system.evasion === "number") {
+      this.system.evasion = owner.system.evasion;
+    }
+    if (typeof owner.system.edef === "number") {
+      this.system.edef = owner.system.edef;
+    }
+    if (typeof owner.system.speed === "number") {
+      this.system.speed = owner.system.speed;
+    }
+
+    return true;
   }
 
   // Quick checkers
