@@ -200,6 +200,13 @@ export class EmbeddedRefField<const Options extends EmbeddedRefField.Options> ex
     return value; // Don't overzealously fix
   }
 
+  /** @override */
+  toObject(value: any) {
+    if (!value) return null;
+    if (typeof value === "string") return { id: value };
+    return { id: value.id ?? value };
+  }
+
   /** @inheritdoc */
   initialize(
     value: fields.StringField.InitializedType<EmbeddedRefField.Options>,
@@ -286,9 +293,18 @@ export class SyncUUIDRefField extends fields.StringField<
     const rrtu = regRefToUuid(this.document_type, value);
     if (rrtu) return rrtu;
     if (value?.uuid) value = value.uuid;
+    if (value?.id) value = value.id;
     if (value?.value !== undefined) value = value.value;
-    if (value?.uuid) value = value.uuid; // Intentionally duplicated
+    if (value?.uuid) value = value.uuid;
+    if (value?.id) value = value.id;
     return value; // Don't overzealously fix
+  }
+
+  /** @override */
+  toObject(value: any) {
+    if (!value) return null;
+    if (typeof value === "string") return { id: value };
+    return { id: value.id ?? value.uuid ?? value };
   }
 
   /** @override */

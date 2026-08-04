@@ -782,6 +782,9 @@ export class LancerActor<SubType extends Actor.SubType = Actor.SubType> extends 
     if (typeof owner.system.speed === "number") {
       this.system.speed = owner.system.speed;
     }
+    if (typeof owner.system.save === "number") {
+      this.system.save = owner.system.save;
+    }
 
     return true;
   }

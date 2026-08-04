@@ -44,7 +44,9 @@
     },
     "Actor": {
       "FIELDS": {
-        "activations": { "label": "Ativações" }
+        "activations": {
+          "label": "Ativações"
+        }
       }
     },
     "placeholder": {
@@ -537,13 +539,13 @@
     "talent_hud": {
       "title": "Talentos ({name})",
       "view_description": "Ver descrição do talento",
-      "acc_label": "Acc",
-      "diff_label": "Diff",
+      "acc_label": "+P",
+      "diff_label": "-D",
       "rank_badge": "Ranque {rank}",
       "rank_title": "Ranque {rank}",
       "summary_label": "Bônus de Talentos:",
-      "summary_acc": "+{acc} Acurácia",
-      "summary_diff": "-{diff} Dificuldade"
+      "summary_acc": "+({acc}) P",
+      "summary_diff": "-({diff})D"
     },
     "damage_hud": {
       "base_damage": "Dano Base",
