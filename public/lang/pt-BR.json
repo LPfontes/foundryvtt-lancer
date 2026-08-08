@@ -23,7 +23,7 @@
       "reserve": "Reserva",
       "skill": "Perícia",
       "status": "Status/Condição",
-      "talent": "Talent",
+      "talent": "Talento",
       "weapon_mod": "Mod de Arma"
     }
   },
@@ -38,26 +38,26 @@
     "LancerNPCClassSheet": "Ficha de Classe/Modelo de PNJ do Sistema Lancer",
     "LancerNPCFeatureSheet": "Ficha de Característica de PNJ do Sistema Lancer",
     "inventory": {
-      "title": "{name}'s Inventory",
+      "title": "{name} | Inventário",
       "categories": {
-        "frames": "Frames",
-        "weapons": "Weapons",
-        "systems": "Systems",
+        "frames": "Chassis",
+        "weapons": "Armas",
+        "systems": "Sistemas",
         "mods": "Mods",
-        "statuses": "Statuses",
-        "armor": "Armor",
-        "gear": "Gear",
-        "talents": "Talents",
-        "skills": "Skills",
-        "licenses": "Licenses",
-        "core_bonuses": "Core Bonuses",
-        "reserves": "Reserves",
-        "organizations": "Organizations"
+        "statuses": "Status",
+        "armor": "Armadura",
+        "gear": "Equipamento",
+        "talents": "Talentos",
+        "skills": "Perícias",
+        "licenses": "Licenças",
+        "core_bonuses": "Bônus de Núcleo",
+        "reserves": "Reservas",
+        "organizations": "Organizações"
       }
     },
     "common": {
-      "save": "Save",
-      "confirm": "Confirm"
+      "save": "Salvar",
+      "confirm": "Confirmar"
     },
     "Actor": {
       "FIELDS": {
@@ -102,19 +102,19 @@
         "heat": "CALOR",
         "heatcap": "CAP. CALOR",
         "edef": "DEF-E",
-        "stress": "ESTRESSE",
+        "stress": "ESTR",
         "speed": "VEL",
         "save": "SALV",
         "sensor_range": "SENS",
-        "tech_attack": "ATQ. TEC",
-        "overcharge": "SOBRECARGA",
-        "burn": "QUEIMADURA",
-        "overshield": "ESC. EXTRA",
-        "repairs": "CAP. REP",
+        "tech_attack": "ATQ.TEC",
+        "overcharge": "SOB.CARGA",
+        "burn": "QUEIM",
+        "overshield": "ESC.EXTRA",
+        "repairs": "CAP.REP",
         "size": "TAM",
         "cost": "CUSTO",
         "attack_bonus": "ATQ",
-        "accuracy": "PREC"
+        "accuracy": "PRECISÃO"
       }
     },
     "deployable-sheet": {
@@ -624,13 +624,13 @@
       "difficulty": "Dificuldade",
       "accurate": "Preciso",
       "smart": "Inteligente",
-      "seeking": "Buscando",
+      "seeking": "Guiada",
       "inaccurate": "Impreciso",
-      "impaired": "Debilitado",
+      "impaired": "Impedido",
       "thrown": "Arremessado",
       "engaged": "Engajado",
-      "prone": "Caído",
-      "lock_on": "Travado em Mira",
+      "prone": "Prostado",
+      "lock_on": "Trava de Mira",
       "targeting": "Alvo",
       "increase_accuracy": "Aumentar Precisão",
       "increase_difficulty": "Aumentar Dificuldade",
