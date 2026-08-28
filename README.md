@@ -1,7 +1,7 @@
 # Lancer System for FoundryVTT
 
 A Foundry VTT system for the [Lancer RPG](https://massif-press.itch.io/corebook-pdf) by [Massif Press](https://massif-press.itch.io/).
-
+https://github.com/LPfontes/foundryvtt-lancer/releases/latest/download/system.json
 ## Attribution and Acknowledgements
 
 This project incorporates several resources and open source software (either in part or in whole). Without these, this project would be much poorer, and might not even exist in the first place. A huge thank you to all those who use their time and skills to enrich the world with their creations!
