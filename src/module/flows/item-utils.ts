@@ -141,20 +141,31 @@ export async function applySelfHeat(
   if (!state.data) throw new TypeError(`Flow state missing!`);
   let self_heat = 0;
 
+  const isResistant = Boolean(state.actor.system.resistances?.heat && !state.actor.system.statuses?.shredded);
+
   if (state.data.self_heat) {
     const roll = await new Roll(state.data.self_heat).evaluate();
     self_heat = roll.total!;
+    const applied_heat = isResistant ? Math.ceil(self_heat / 2) : self_heat;
     state.data.self_heat_result = {
       roll,
       tt: await roll.getTooltip(),
+      resisted: isResistant && self_heat > 0,
+      applied_heat,
     };
   }
 
   if (game.settings.get(game.system.id, LANCER.setting_automation).attack_self_heat) {
-    if (state.actor.is_mech() || state.actor.is_npc()) {
+    if ((state.actor.is_mech() || state.actor.is_npc() || state.actor.is_deployable()) && state.actor.hasHeatcap()) {
+      let appliedSelfHeat = isResistant ? Math.ceil(self_heat / 2) : self_heat;
+      let appliedOverkillHeat = (state.data as any).overkill_heat ?? 0;
+      if (isResistant && appliedOverkillHeat > 0) {
+        appliedOverkillHeat = Math.ceil(appliedOverkillHeat / 2);
+      }
+
       // TODO: overkill heat to move to damage flow
       await state.actor.update({
-        "system.heat.value": state.actor.system.heat.value + (state.data.overkill_heat ?? 0) + self_heat,
+        "system.heat.value": state.actor.system.heat.value + appliedOverkillHeat + appliedSelfHeat,
       });
     }
   }

@@ -1,3 +1,4 @@
+import { LANCER } from "../config";
 import { AppliedDamage } from "../actor/damage-calc";
 import { LancerActor } from "../actor/lancer-actor";
 import { DamageHudData, HitQuality } from "../apps/damage";
@@ -522,7 +523,12 @@ async function applyOverkillHeat(state: FlowState<LancerFlowState.DamageRollData
     (state.actor.is_mech() || state.actor.is_npc() || state.actor.is_deployable()) &&
     state.actor.system.heat.max > 0
   ) {
-    await state.actor.update({ "system.heat.value": state.actor.system.heat.value + state.data.overkill_heat });
+    let overkillHeat = state.data.overkill_heat;
+    const isResistant = Boolean(state.actor.system.resistances?.heat && !state.actor.system.statuses?.shredded);
+    if (isResistant && overkillHeat > 0) {
+      overkillHeat = Math.ceil(overkillHeat / 2);
+    }
+    await state.actor.update({ "system.heat.value": state.actor.system.heat.value + overkillHeat });
   }
   return true;
 }

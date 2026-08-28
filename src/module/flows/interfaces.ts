@@ -69,6 +69,8 @@ export namespace LancerFlowState {
   export type SelfHeatResult = {
     roll: Roll;
     tt: string | HTMLElement | JQuery<HTMLElement>; // Tooltip
+    resisted?: boolean;
+    applied_heat?: number;
   };
 
   export type HitResult = {

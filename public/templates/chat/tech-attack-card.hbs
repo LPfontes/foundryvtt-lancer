@@ -43,6 +43,15 @@
       </div>
       <div class="collapse" data-collapse-id="{{_uuid}}-self-heat">
         {{{lancer-dice-roll self_heat_result.roll self_heat_result.tt "cci cci-heat i--4 damage--heat"}}}
+        {{#if self_heat_result.resisted}}
+          <div class="flexrow" style="align-items: center; justify-content: flex-end; margin-top: 2px; padding: 0 4px">
+            <span class="lancer-damage-tag" data-tooltip='{{localize "lancer.statusIconsNames.resistance_heat"}}'>
+              <i class="mdi mdi-shield-half-full i--1"></i> {{localize "lancer.statusIconsNames.resistance_heat"}} ({{
+                self_heat_result.applied_heat
+              }})
+            </span>
+          </div>
+        {{/if}}
       </div>
     </div>
   {{/if}}

@@ -1,7 +1,7 @@
-<div class="card clipped-bot" {{#if item_uuid}} data-uuid="{{item_uuid}}" {{/if}} style="margin: 0px;">
+<div class="card clipped-bot" {{#if item_uuid}} data-uuid="{{item_uuid}}" {{/if}} style="margin: 0px">
   <div class="lancer-header lancer-weapon medium">
     <i class="cci cci-weapon i--4 i--light"> </i>
-    <span>{{ title }}</span>
+    <span>{{title}}</span>
     {{!-- TODO: refactor reroll button --}}
     <!-- <a class="flow-button roll-attack lancer-button lancer-macro" data-macro="{{rerollMacroData}}" title="Reroll this attack">
       <i class="fas fa-dice-d20 i--4 i--light"></i>
@@ -39,32 +39,48 @@
       </div>
       <div class="collapse" data-collapse-id="{{_uuid}}-self-heat">
         {{{lancer-dice-roll self_heat_result.roll self_heat_result.tt "cci cci-heat i--4 damage--heat"}}}
+        {{#if self_heat_result.resisted}}
+          <div class="flexrow" style="align-items: center; justify-content: flex-end; margin-top: 2px; padding: 0 4px">
+            <span class="lancer-damage-tag" data-tooltip='{{localize "lancer.statusIconsNames.resistance_heat"}}'>
+              <i class="mdi mdi-shield-half-full i--1"></i> {{localize "lancer.statusIconsNames.resistance_heat"}} ({{
+                self_heat_result.applied_heat
+              }})
+            </span>
+          </div>
+        {{/if}}
       </div>
     </div>
   {{/if}}
   {{#if effect}}
     <div class="card clipped">
       <div class="lancer-mini-header">{{localize "lancer.chat-card.title.effect"}}</div>
-      {{#if effect.effect_type}} {{{eff-preview effect}}} {{/if}} {{#unless effect.effect_type}}<span class="effect-text"
-    >{{{effect}}}</span
-    >{{/unless}}
+      {{#if effect.effect_type}}
+        {{{eff-preview effect}}}
+      {{/if}}
+      {{#unless effect.effect_type}}<span class="effect-text">{{{effect}}}</span>{{/unless}}
     </div>
   {{/if}}
   {{#if on_attack}}
     <div class="card clipped">
-      <div class="lancer-mini-header collapse-trigger" data-collapse-id="{{_uuid}}-effect">{{localize "lancer.chat-card.title.on-attack"}}</div>
+      <div class="lancer-mini-header collapse-trigger" data-collapse-id="{{_uuid}}-effect">
+        {{localize "lancer.chat-card.title.on-attack"}}
+      </div>
       <span class="effect-text collapse" data-collapse-id="{{_uuid}}-effect">{{{on_attack}}}</span>
     </div>
   {{/if}}
   {{#if on_hit}}
     <div class="card clipped">
-      <div class="lancer-mini-header collapse-trigger" data-collapse-id="{{_uuid}}-effect">{{localize "lancer.chat-card.title.on-hit"}}</div>
+      <div class="lancer-mini-header collapse-trigger" data-collapse-id="{{_uuid}}-effect">
+        {{localize "lancer.chat-card.title.on-hit"}}
+      </div>
       <span class="effect-text collapse" data-collapse-id="{{_uuid}}-effect">{{{on_hit}}}</span>
     </div>
   {{/if}}
   {{#if on_crit}}
     <div class="card clipped">
-      <div class="lancer-mini-header collapse-trigger" data-collapse-id="{{_uuid}}-effect">{{localize "lancer.chat-card.title.on-crit"}}</div>
+      <div class="lancer-mini-header collapse-trigger" data-collapse-id="{{_uuid}}-effect">
+        {{localize "lancer.chat-card.title.on-crit"}}
+      </div>
       <span class="effect-text collapse" data-collapse-id="{{_uuid}}-effect">{{{on_crit}}}</span>
     </div>
   {{/if}}
@@ -72,5 +88,7 @@
   <button
     class="lancer-button lancer-damage-flow lancer-secondary"
     label="lancer.chat-card.attack.roll-all-damage"
-  ><i class="mdi mdi-dice-multiple i--3 i--light"></i>&nbsp;{{localize "lancer.chat-card.attack.roll-all-damage"}}</button>
+  >
+    <i class="mdi mdi-dice-multiple i--3 i--light"></i>&nbsp;{{localize "lancer.chat-card.attack.roll-all-damage"}}
+  </button>
 </div>

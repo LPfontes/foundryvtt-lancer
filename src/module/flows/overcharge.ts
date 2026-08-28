@@ -58,16 +58,23 @@ async function updateOverchargeActor(state: FlowState<LancerFlowState.Overcharge
   if (!state.actor || !state.actor.is_mech()) throw new Error(`Only mechs can overcharge!`);
   if (!state.data) throw new Error(`Data not found for overcharge flow!`);
   if (!state.data.result) throw new Error(`Overcharge hasn't been rolled yet!`);
-  // Assume we can always increment overcharge here...
-  await state.actor.update({
+  // Prepare update data
+  const updateData: Record<string, any> = {
     "system.overcharge": state.data.level,
-  });
+  };
+
   // Only increase heat if we haven't disabled it
   if (game.settings.get(game.system.id, LANCER.setting_automation).overcharge_heat) {
-    await state.actor.update({
-      "system.heat.value": state.actor.system.heat.value + state.data.result.roll.total!,
-    });
+    let heat = state.data.result.roll.total!;
+    const isResistant = Boolean(state.actor.system.resistances?.heat && !state.actor.system.statuses?.shredded);
+    if (isResistant && heat > 0) {
+      heat = Math.ceil(heat / 2);
+    }
+    const currentHeat = state.actor.system.heat.value;
+    updateData["system.heat.value"] = currentHeat + heat;
   }
+
+  await state.actor.update(updateData);
 }
 
 async function printOverchargeCard(

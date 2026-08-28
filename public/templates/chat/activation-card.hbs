@@ -1,4 +1,4 @@
-<div class="card clipped-bot" style="margin: 0px;">
+<div class="card clipped-bot" style="margin: 0px">
   <div class="lancer-header lancer-primary">
     <span>// {{upper-case title}} //</span>
     {{{action_chip}}}
@@ -9,6 +9,15 @@
     </div>
     {{#if roll}}
       {{{lancer-dice-roll roll roll_tt roll_icon}}}
+      {{#if resisted}}
+        <div class="flexrow" style="align-items: center; justify-content: flex-end; margin-top: 2px; padding: 0 4px">
+          <span class="lancer-damage-tag" data-tooltip='{{localize "lancer.statusIconsNames.resistance_heat"}}'>
+            <i class="mdi mdi-shield-half-full i--1"></i> {{localize "lancer.statusIconsNames.resistance_heat"}} ({{
+              applied_heat
+            }})
+          </span>
+        </div>
+      {{/if}}
     {{/if}}
     {{{tag-list "tags"}}}
   </div>

@@ -143,6 +143,8 @@ export async function printActionUseCard(
     roll_tt: state.data.self_heat_result?.tt,
     roll_icon: "cci cci-heat i--4 damage--heat",
     tags: state.data.tags,
+    resisted: state.data.self_heat_result?.resisted,
+    applied_heat: state.data.self_heat_result?.applied_heat,
   };
   await renderTemplateStep(state.actor, template, data, flags);
   return true;
