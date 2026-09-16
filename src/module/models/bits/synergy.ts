@@ -51,9 +51,12 @@ export class SynergyField<Options extends fields.SchemaField.Options<SynergyFiel
     if (fieldData.locations?.some((s: string) => s.includes(","))) {
       fieldData.locations = fieldData.locations.flatMap((s: string) => s.split(",").map(s2 => s2.trim()));
     }
-    // Ensure all lowercase
+    // Ensure all lowercase and valid
     if (fieldData.locations) {
-      fieldData.locations = fieldData.locations.map((l: string) => l.toLowerCase());
+      fieldData.locations = fieldData.locations.map((l: string) => {
+        let clean = l.toLowerCase();
+        return AllSynergyLocations.includes(clean as any) ? clean : "other";
+      });
     }
 
     return super.migrateSource(sourceData, fieldData);
@@ -64,11 +67,13 @@ export function unpackSynergy(data: PackedSynergyData) {
   // Have to do a lot of annoying fixup
   let raw_locations = data.locations ?? [];
   if (!Array.isArray(raw_locations)) raw_locations = [raw_locations];
-  let locations = raw_locations.flatMap(base => {
-    let l = base.toLowerCase().trim();
-    if (l.includes(",")) return l.split(",").map(sub_l => sub_l.trim());
-    return l;
-  }) as SynergyLocation[];
+  let locations = raw_locations
+    .flatMap(base => {
+      let l = base.toLowerCase().trim();
+      if (l.includes(",")) return l.split(",").map(sub_l => sub_l.trim());
+      return l;
+    })
+    .map(l => (AllSynergyLocations.includes(l as any) ? l : "other")) as SynergyLocation[];
 
   let sizes: WeaponSizeChecklist | null = null;
   if (data.weapon_sizes) {

@@ -81,6 +81,36 @@ export class DeployableModel extends LancerDataModel<DeployableSchema, Actor.Imp
         speed: data.speed || 0,
       };
     }
+    if (data.stats) {
+      data.stats.armor =
+        typeof data.stats.armor === "number"
+          ? Math.floor(data.stats.armor)
+          : Number.parseInt(String(data.stats.armor ?? 0)) || 0;
+      data.stats.edef =
+        typeof data.stats.edef === "number"
+          ? Math.floor(data.stats.edef)
+          : Number.parseInt(String(data.stats.edef ?? 10)) || 10;
+      data.stats.evasion =
+        typeof data.stats.evasion === "number"
+          ? Math.floor(data.stats.evasion)
+          : Number.parseInt(String(data.stats.evasion ?? 10)) || 10;
+      data.stats.heatcap =
+        typeof data.stats.heatcap === "number"
+          ? Math.floor(data.stats.heatcap)
+          : Number.parseInt(String(data.stats.heatcap ?? 0)) || 0;
+      data.stats.save =
+        typeof data.stats.save === "number"
+          ? Math.floor(data.stats.save)
+          : Number.parseInt(String(data.stats.save ?? 10)) || 10;
+      data.stats.speed =
+        typeof data.stats.speed === "number"
+          ? Math.floor(data.stats.speed)
+          : Number.parseInt(String(data.stats.speed ?? 0)) || 0;
+      data.stats.size =
+        typeof data.stats.size === "number"
+          ? data.stats.size
+          : Number.parseFloat(String(data.stats.size ?? 0.5)) || 0.5;
+    }
     if (data.hp && typeof data.hp == "string") {
       data.stats.hp = fixCCFormula(data.hp);
       // Having a string data.hp instead of object will cause an error later in
@@ -112,14 +142,16 @@ export function unpackDeployableData(data: PackedDeployableData): DeepPartial<So
     tags: data.tags?.map(unpackTag),
     activation: data.activation,
     stats: {
-      armor: data.armor,
-      edef: data.edef,
-      evasion: data.evasion,
-      heatcap: data.heatcap,
+      armor: typeof data.armor === "number" ? Math.floor(data.armor) : Number.parseInt(String(data.armor ?? 0)) || 0,
+      edef: typeof data.edef === "number" ? Math.floor(data.edef) : Number.parseInt(String(data.edef ?? 10)) || 10,
+      evasion:
+        typeof data.evasion === "number" ? Math.floor(data.evasion) : Number.parseInt(String(data.evasion ?? 10)) || 10,
+      heatcap:
+        typeof data.heatcap === "number" ? Math.floor(data.heatcap) : Number.parseInt(String(data.heatcap ?? 0)) || 0,
       hp: fixCCFormula(data.hp?.toString() || "5"),
-      save: data.save,
-      size: data.size,
-      speed: data.speed,
+      save: typeof data.save === "number" ? Math.floor(data.save) : Number.parseInt(String(data.save ?? 10)) || 10,
+      size: typeof data.size === "number" ? data.size : Number.parseFloat(String(data.size ?? 0.5)) || 0.5,
+      speed: typeof data.speed === "number" ? Math.floor(data.speed) : Number.parseInt(String(data.speed ?? 0)) || 0,
     },
     activations: 0,
     avail_mounted: undefined,

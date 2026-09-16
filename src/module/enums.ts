@@ -472,7 +472,21 @@ export type SynergyLocation =
   | "brace"
   | "cascade"
   | "pilot_weapon"
-  | "mount";
+  | "mount"
+  | "attack"
+  | "boot_up"
+  | "dismount"
+  | "eject"
+  | "full_activation"
+  | "full_tech"
+  | "hide"
+  | "prepare"
+  | "quick_tech"
+  | "reload"
+  | "search"
+  | "self_destruct"
+  | "shut_down"
+  | "stats";
 export const AllSynergyLocations = [
   "any", // Acts as a wildcard
   "active_effects",
@@ -516,6 +530,20 @@ export const AllSynergyLocations = [
   "cascade",
   "pilot_weapon",
   "mount",
+  "attack",
+  "boot_up",
+  "dismount",
+  "eject",
+  "full_activation",
+  "full_tech",
+  "hide",
+  "prepare",
+  "quick_tech",
+  "reload",
+  "search",
+  "self_destruct",
+  "shut_down",
+  "stats",
 ];
 
 export enum DeployableType {
