@@ -468,7 +468,7 @@ async function massifContentPacks(): Promise<{ id: string; manifest: IContentPac
       manifest: {
         name: "Lancer Core Book (PT-BR)",
         author: "LPfontes / Massif Press",
-        version: "1.0.0",
+        version: "1.2.2",
         website: "https://github.com/LPfontes/lancer-data-pt-br",
       } as IContentPackManifest,
       cpData: (await import("lancer-data-pt-br")) as NpmLancerData,
